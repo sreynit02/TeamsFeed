@@ -1,6 +1,6 @@
 # TeamsFeed
 
-#Contributors:  
+# Contributors:  
 
 //Team members:  
 
