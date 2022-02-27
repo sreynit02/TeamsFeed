@@ -17,10 +17,10 @@ Ahmed Abdulahi
 Emiliano Torres-Vera  
 Immanuela Belaineh  
 
-## Problem statement:  
+## Problem statement  
 For over 50 years, FeedingKY has not collected enough detailed information from farmers, especially about their main crops. Feeding KY needs to reformat its existing database to track farmers' and growers' information.  
 
-## Business Rule 
+## Business Rules 
 1. A farm can only be assigned to one county. 
 2. A grower must own at least one farm . A farm must have one or more growers
 3. A farmer must be a resident of Kentucky
