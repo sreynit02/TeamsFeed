@@ -36,4 +36,4 @@ For over 50 years, FeedingKY has not collected enough detailed information from 
 13. Food has name and type.
 
 ## ER diagram
-
+<image src="https://github.com/sreynit02/TeamsFeed/blob/main/PM01_%20E-R%20Diagram.png">
