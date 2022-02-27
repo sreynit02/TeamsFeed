@@ -39,4 +39,6 @@ Our goal is to create a database that can effectively use queries to give the us
 13. Food has name and type.
 
 ## ER diagram
+The Entity-relationship diagram is as shown below:
 
+<image src="https://github.com/sreynit02/TeamsFeed/blob/main/PM01_%20E-R%20Diagram.png">
