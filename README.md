@@ -18,10 +18,10 @@
 5. Immanuela Belaineh  
 
 ## Problem statement:  
-For over 50 years, FeedingKY has not collected enough detailed information from farmers, especially about their main crops. Feeding KY needs to reformat its existing database to track farmers' and growers' information.  
+For over 50 years, FeedingKY has not collected enough detailed information from farmers, especially about their main crops. Feeding KY needs to reformat its existing database to track farmers' information to track where grant money is being spent.
 
 ## Goal
-Our goal is to create a database that can effectively use queries to give the user data about farmers, crops, and where the crops go.
+Our goal is to create a database that can effectively use queries to give the user data about farmers, crops, and where grant money goes.
 
 ## Business Rule 
 1. A farm can only be assigned to one county. 
