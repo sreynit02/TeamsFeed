@@ -18,7 +18,7 @@
 5. Immanuela Belaineh  
 
 ## Problem statement:  
-For over 50 years, FeedingKY has not collected enough detailed information from farmers, especially about their main crops. Feeding KY needs to reformat its existing database to track farmers' information to track where grant money is being spent.
+For over 50 years, FeedingKY has not collected enough detailed information from farmers, especially about their main crops and how much is being spent on those crops. Feeding KY needs to reformat its existing database to track farmers' information to track where grant money is being spent on certain crops.
 
 ## Goal
 Our goal is to create a database that can effectively use queries to give the user data about farmers, crops, and where grant money goes.
