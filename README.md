@@ -39,6 +39,7 @@ Our goal is to create a database that can effectively use queries to give the us
 11. A farmer can sell their produce to FeedingKY at an auction or a food bank
 12. There is only one food bank per county, but not all counties in KY have a food bank. Each food bank needs an address because feedingKY only donates to food banks in KY.  
 13. Food has name and type.
+14. Food that is donated will be put in on an invoice and the price will be $0.
 
 ## ER diagram
 The Entity-relationship diagram is as shown below:
