@@ -27,12 +27,12 @@ Our goal is to create a database that can effectively use queries to give the us
 
 ## Business Rule 
 1. A farm can only be assigned to one county. 
-2. A grower must own at least one farm . A farm must have one or more growers
+2. A farmer must own at least one farm .
 3. A farmer must be a resident of Kentucky
 4. A farmer can grow one or many crops
 5. A farmer can donate up to 28 kinds of crops that are in the list of crops accepted by FeedingKY (they can accept other crops except berries and honey)
 6. A farmer can have more than one invoice
-7. Each grower is assigned an ID number 
+7. Each farmer is assigned an ID number 
 8. Farmer’s first/last name is recorded, their county, and address
 9. Each invoice is assigned an ID
 10. A farmer can sell their produce to FeedingKY at an auction or a food bank
