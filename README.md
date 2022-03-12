@@ -37,9 +37,8 @@ Our goal is to create a database that can effectively use queries to give the us
 9. Farmer’s first/last name is recorded, their county, and address
 10. Each invoice is assigned an ID
 11. A farmer can sell their produce to FeedingKY at an auction or a food bank
-12. There is only one food bank per county, but not all counties in KY have a food bank
-13. A farmer can donate to KY Kids eat or not
-14. Food has name and type.
+12. There is only one food bank per county, but not all counties in KY have a food bank. Each food bank needs an address because feedingKY only donates to food banks in KY.  
+13. Food has name and type.
 
 ## ER diagram
 The Entity-relationship diagram is as shown below:
