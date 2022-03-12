@@ -30,7 +30,7 @@ Our goal is to create a database that can effectively use queries to give the us
 2. A farmer must own at least one farm .
 3. A farmer must be a resident of Kentucky
 4. A farmer can grow one or many crops
-5. A farmer can donate up to 28 kinds of crops that are in the list of crops accepted by FeedingKY (they can accept other crops except berries and honey)
+5. A farmer can donate any crop (accept other crops except berries and honey)
 6. A farmer can have more than one invoice
 7. Each farmer is assigned an ID number 
 8. Farmer’s first/last name is recorded, their county, and address
