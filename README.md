@@ -45,4 +45,4 @@ Our goal is to create a database that can effectively use queries to give the us
 ## ER diagram
 The Entity-relationship diagram is as shown below:
 
-<image src="https://github.com/sreynit02/TeamsFeed/blob/main/Copy%20of%20PM01_%20Problem%20Statement%20and%20E-R%20Diagram.drawio.png">
+<image src="https://github.com/sreynit02/TeamsFeed/blob/main/FeedingKY-ER.png">
