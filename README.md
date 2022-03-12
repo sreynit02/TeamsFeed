@@ -31,7 +31,7 @@ Our goal is to create a database that can effectively use queries to give the us
 3. A farmer must own at least one farm with an address because FeedingKY mostly works with farmers in the state.  
 4. A farmer must be a resident of Kentucky
 5. A farmer can grow one or many crops
-6. A farmer can donate any crop (accept other crops except berries and honey)
+6. A farmer can donate any crop (except berries and honey)
 7. A farmer can have more than one invoice
 8. Each farmer is assigned an ID number 
 9. Farmer’s first/last name is recorded, their county, and address
