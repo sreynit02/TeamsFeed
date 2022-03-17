@@ -43,10 +43,10 @@ Our goal is to create a database that can effectively use queries to give the us
 15. Each grant has at least 1 funder.
 
 ## Summary of Changes:  
-Our business rules and problem statement from milestone 1 to milestone 3. At first, our problem statement focused on farmer information but after speaking  
-to the client, we realized that our problem statement should focus on annual financial reports. Also, after speaking to the client, we found out that  
-we were not restricted to just 28 crops (only honey, berries, and some meats). We also found out that KY Kids Eat did not exist anymore. These two business  
-rules were changed and adjusted with minor tweaks to our business rules.  
+Our business rules and problem statement from milestone 1 to milestone 3. At first, our problem statement focused on farmer information but after speaking 
+to the client, we realized that our problem statement should focus on annual financial reports. Also, after speaking to the client, we found out that
+we were not restricted to just 28 crops (only honey, berries, and some meats). We also found out that KY Kids Eat did not exist anymore. These two business
+rules were changed and adjusted with minor tweaks to our business rules.
 
 ## ER diagram
 The Entity-relationship diagram is as shown below:
