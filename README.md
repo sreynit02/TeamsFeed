@@ -51,4 +51,4 @@ rules were changed and adjusted with minor tweaks to our business rules.
 ## ER diagram
 The Entity-relationship diagram is as shown below:
 
-<image src="https://github.com/sreynit02/TeamsFeed/blob/main/E-R%20Diagram.drawio.png">
+<image src="https://github.com/sreynit02/TeamsFeed/blob/main/FeedingKYERD_updated.png">
