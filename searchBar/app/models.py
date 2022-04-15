@@ -11,6 +11,18 @@ class Farmer(db.Model):
     def __repr__(self):
         return " {} {}".format(self.farmerID, self.firstName)
 
+class Food(db.Model):
+    __tablename__ = 'Food'
+    foodID = db.Column(db.Integer, primary_key=True)
+    foodType = db.Column(db.String(50), nullable=False, default='produce')
+    foodName = db.Column(db.String(50), nullable=False)
 
-resultlist = Farmer.query.all()
-print(resultlist)
+    def __repr__(self):
+        return " {} {}".format(self.foodID, self.foodType)
+
+
+
+resultFarmer = Farmer.query.all()
+resultFood = Food.query.all()
+#print(resultFarmer)
+print(resultFood)
