@@ -5,5 +5,8 @@
     </head>
     <body>
         <h2>Search page</h2>
+        {%for farmer in farmers%}
+        <p>{{farmer.firstName}}</p>
+        {%endfor%}
     </body>
 </html>
