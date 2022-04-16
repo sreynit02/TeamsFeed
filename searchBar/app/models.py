@@ -68,10 +68,10 @@ class Funder(db.Model):
      def __repr__(self):
         return " {} {}".format(self.funderID,  self.funderLink)
 
-resultFarmer = Farmer.query.all()
-resultFood = Food.query.all()
-resultAuction = Auction.query.all()
-resultFoodBank = FoodBank.query.all()
+# resultFarmer = Farmer.query.all()
+# resultFood = Food.query.all()
+# resultAuction = Auction.query.all()
+# resultFoodBank = FoodBank.query.all()
 resultFunder = Funder.query.all()
 #print (resultFarmer)
 #print (resultFood)
