@@ -10,6 +10,7 @@ class Farmer(db.Model):
     lastName = db.Column(db.String(50), nullable=False)
     county = db.Column(db.String(50), nullable=False)
     UniqueConstraint (farmerID)
+    foreignKeyFarmer = db.relationship('Invoices', back_populates = 'farmer_ID')
     def __repr__(self):
         return " {} {}".format(self.farmerID, self.firstName)
 
@@ -18,6 +19,7 @@ class Food(db.Model):
     foodID = db.Column(db.Integer, nullable=False, primary_key=True, ) 
     foodType = db.Column(db.String(50), nullable=False, default='produce')
     foodName = db.Column(db.String(50), nullable=False) 
+    foreignKeyFood = db.relationship('PurchasedProduce', back_populates = 'food_ID')
     UniqueConstraint (foodID, foodName)
     def __repr__(self):
         return " {} {}".format(self.foodID,  self.foodType) 
@@ -34,6 +36,7 @@ class Auction(db.Model):
     auctionCounty = db.Column(db.String(50), default='NULL')
     auctionPhone = db.Column(db.String(12), default='NULL')
     auctionContactName = db.Column(db.String(50), default='NULL')
+    foreignKeyAuction = db.relationship('Invoices', back_populates = 'auction_ID')
     UniqueConstraint (auctionID)
     def __repr__(self):
         return " {} {}".format(self.auctionID,  self.auctionDate)
@@ -51,6 +54,7 @@ class FoodBank(db.Model):
     contactName = db.Column(db.String(45), default='NULL')
     contactEmail = db.Column(db.String(100), default='NULL')
     contactPhoneNo = db.Column(db.String(12), default='NULL')
+    foreignKeyFoodBank = db.relationship('Invoices', back_populates = 'foodBank_ID')
     UniqueConstraint (foodbankID, fbPhoneNo)
     def __repr__(self):
         return " {} {}".format(self.foodbankID,  self.fbName)
@@ -67,13 +71,14 @@ class Funder(db.Model):
      funderState = db.Column(db.String(2), default='KY')
      funderZipcode = db.Column(db.String(12), nullable=False)
      UniqueConstraint (funderID)
+     foreignKeyFunder = db.relationship('Grant', back_populates = 'funder_ID')
      def __repr__(self):
         return " {} {}".format(self.funderID,  self.funderLink)
 
 class Grant(db.Model):
     __tablename__='Grant'
     grantID = db.Column(db.Integer, nullable=False, primary_key=True)
-    funderID = db.Column(db.Integer) #need to make this foreign key
+    funderID = db.Column(db.Integer, db.ForeignKey('Funder.funderID'))
     totalAward = db.Column(db.Float, nullable=False)
     totalBudgetUsed = db.Column(db.Float, default='NULL')
     startDate = db.Column(db.Date, default='NULL')
@@ -84,20 +89,23 @@ class Grant(db.Model):
     closed = db.Column(default='NULL') 
     programName = db.Column(db.String(50), default='NULL')
     grantType = db.Column(db.String(45), default='grant_type')
+    foreignKeyGrant = db.relationship('Invoices', back_populates = 'grant_ID')
     UniqueConstraint(grantID)
     TINYINT(closed)
+    funder_ID = db.relationship("Funder", back_populates="foreignKeyFunder")
     def __repr__(self):
         return " {} {}".format(self.grantID,  self.totalAward)
 
 class PurchasedProduce(db.Model):
     __tablename__='PurchasedProduce'
     pfID = db.Column(db.Integer, nullable=False, primary_key=True)
-    foodID = db.Column(db.Integer, default='NULL') #need to make this foreign key
+    foodID = db.Column(db.Integer, db.ForeignKey('Food.foodID'), default='NULL') #need to make this foreign key
     quantity = db.Column(db.Integer, nullable=False)
     unitPrice = db.Column(db.Float, nullable=False)
     unit = db.Column(db.String(20), nullable=False)
+    foreignKeyPurchasedproduce = db.relationship('Invoices', back_populates = 'purchasedProduce_ID')
     UniqueConstraint(pfID)
-
+    food_ID = db.relationship("Food", back_populates="foreignKeyFood")
     def __repr__(self):
         return " {} {}".format(self.pfID,  self.quantity)
 
@@ -114,31 +122,33 @@ class Invoices(db.Model):
     deliveryFee = db.Column(db.Float, default='NULL')
     buyFee = db.Column(db.Float, default='NULL')
     purchaseOrder = db.Column(db.String(255), default='NULL')
-    pfID = db.Column(db.Integer, default='NULL') #foreign Key
-    grantID = db.Column(db.Integer, default='NULL') #foreign Key
-    farmerID = db.Column(db.Integer, default='NULL') #foreign Key
-    auctionID = db.Column(db.Integer, default='NULL') #foreign Key
-    foodBankID = db.Column(db.Integer, default='NULL') #foreign Key
+    pfID = db.Column(db.Integer, db.ForeignKey('PurchasedProduce.pfID'), default='NULL') 
+    grantID = db.Column(db.Integer, db.ForeignKey('Grant.grantID'), default ='NULL') 
+    farmerID = db.Column(db.Integer, db.ForeignKey('Farmer.farmerID'), default='NULL') 
+    auctionID = db.Column(db.Integer, db.ForeignKey('Auction.auctionID'), default='NULL') 
+    foodBankID = db.Column(db.Integer, db.ForeignKey('FoodBank.foodbankID'), default='NULL')
+    purchasedProduce_ID = db.relationship("PurchasedProduce", back_populates="foreignKeyPurchasedproduce")
+    grant_ID = db.relationship("Grant", back_populates="foreignKeyGrant")
+    farmer_ID = db.relationship("Farmer", back_populates="foreignKeyFarmer")
+    auction_ID = db.relationship("Auction", back_populates="foreignKeyAuction")
+    foodBank_ID = db.relationship("FoodBank", back_populates="foreignKeyFoodBank")
     UniqueConstraint(invoiceNo)
-
     def __repr__(self):
         return " {} {}".format(self.invoiceNo,  self.totalCost)
 
-
-
-# resultFarmer = Farmer.query.all()
-# resultFood = Food.query.all()
+#resultFarmer = Farmer.query.all()
+#resultFood = Food.query.all()
 # resultAuction = Auction.query.all()
 # resultFoodBank = FoodBank.query.all()
 # resultFunder = Funder.query.all()
 # resultGrant = Grant.query.all()
-# resultpurchasedProduce = PurchasedProduce.query.all()
-resultInvoice = Invoices.query.all()
-#print(resultpurchasedProduce)
-print(resultInvoice)
-#print(resultFunder)
-#print (resultFarmer)
-#print (resultFood)
-#print (resultAuction)
-#print (resultFoodBank)
-#print (resultGrant)
+resultpurchasedProduce = PurchasedProduce.query.with_entities(PurchasedProduce.foodID, Food.foodType)
+# resultInvoice = Invoices.query.all()
+print(resultpurchasedProduce)
+# print(resultInvoice)
+# print(resultFunder)
+# print (resultFarmer)
+# print (resultFood)
+# print (resultAuction)
+# print (resultFoodBank)
+# print (resultGrant)

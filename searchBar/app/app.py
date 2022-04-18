@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:password@127.0.0.1:3307/databasename'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky'
 app.config['SQLALCHEMY_ECHO'] = True;
 db = SQLAlchemy(app)
 
