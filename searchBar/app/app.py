@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky'
-app.config['SQLALCHEMY_ECHO'] = True;
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user1:feedingky@DBMS@127.0.0.1:3306/feedingky'
+app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
 
 @app.route("/")
 def hello_world():
