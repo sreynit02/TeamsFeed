@@ -22,12 +22,9 @@ class Food(db.Model):
     foodID = db.Column(db.Integer, nullable=False, primary_key=True, )
     foodType = db.Column(db.String(50), nullable=False, default='produce')
     foodName = db.Column(db.String(50), nullable=False)
-<<<<<<< HEAD
+    UniqueConstraint(foodID, foodName)
     foreignKeyFood = db.relationship(
         'PurchasedProduce', back_populates='food_ID')
-=======
-
->>>>>>> 7fc49a9d5c27c2563a103a9302b13d3d4b27ad6d
     UniqueConstraint(foodID, foodName)
 
     def __repr__(self):

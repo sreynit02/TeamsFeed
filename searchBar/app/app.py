@@ -10,7 +10,6 @@ engine = create_engine(
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:password@127.0.0.1:3306/feedingky'
-
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
