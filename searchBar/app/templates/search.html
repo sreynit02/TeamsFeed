@@ -8,10 +8,14 @@
               </tr>
             </thead>
             <tbody>
-                {% for county in counties %}
+                {% for searchResult in searchResults %}
               <tr>
-                <td>{{county[0]}}</td>
-                <td>{{county[1]}}</td>
+                <td>{{searchResult[0]}}</td>
+                <td>{{searchResult[1]}}</td>
               </tr>
               {% endfor %}
+            </tbody>
+        </table>
+
+
 {%endblock%}
