@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, func
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://User1:Berea#CSC330@127.0.0.1:3306/feedingky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -20,7 +20,9 @@ def hello_world():
 def renderSearchPage(value):
     if value=="1":
         # funding spent query
-        return render_template("selectError.html")
+        from models import Invoices
+        totalCost = Invoices.query.with_entities(func.sum(Invoices.totalCost)).all()
+        return render_template("search.html", value = totalCost)
     elif value=="2":
         #  types of produce query
         return render_template("selectError.html")
@@ -36,9 +38,6 @@ def renderSearchPage(value):
         counties = Farmer.query.with_entities(Farmer.county, func.count(
             Farmer.county)).group_by(Farmer.county).all()
         return render_template("search.html", searchResults=counties)
-    elif value=="5":
-        # farmers that participate in program
-        return render_template("selectError.html")
     elif value=="6":
         # farmers that participate in program
         return render_template("selectError.html")
