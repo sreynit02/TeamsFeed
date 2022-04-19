@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from numpy import full
 from sqlalchemy import create_engine, func
 
 
@@ -27,9 +28,27 @@ def renderSearchPage(value):
         return render_template("search.html", value=totalCost, searchResults=invoices)
     elif value == "2":
         #  types of produce query
-        return render_template("selectError.html")
+        from models import Food
+        from models import PurchasedProduce
+        # get distinct food with produce type
+        produce = Food.query.with_entities(Food.foodID).filter(
+            Food.foodType == "produce").distinct()
+        producePurchased = PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.count(
+            PurchasedProduce.foodID)).group_by(PurchasedProduce.foodID).filter(PurchasedProduce.foodID.in_(produce)).all()
+        # Need to find the foodType in produce from the foodID in producePurchased
+        # Using a join
+        # result = PurchasedProduce.query.join(Food, full=True)
+        # purchasedIDs=[]
+        # for produce in producePurchased:
+        #     purchasedIDs.append(producePurchased[0])
+        # finalResults=[]
+
+        return render_template("search.html", searchResults=producePurchased)
     elif value == "3":
         # pounds distributed
+        from models import PurchasedProduce
+        pounds = PurchasedProduce.query.with_entities(
+            func.sum(PurchasedProduce.)).all()
         return render_template("selectError.html")
     elif value == "4":
         # meals supplemented

@@ -1,6 +1,6 @@
 {%extends 'base.html' %}
 {% block main %}
-        <p>Total cost: {{value}}</p>
+        <!-- <p>Total cost: {{searchResults}}</p> -->
         <table class="table table-hover">
             <thead>
               <tr>
@@ -10,9 +10,13 @@
             </thead>
             <tbody>
                 {% for searchResult in searchResults %}
+              <!-- <tr>
+                <td>{{searchResult.foodID}}</td>
+                <td>{{searchResult.foodType}}</td>
+              </tr> -->
               <tr>
                 <td>{{searchResult.invoiceNo}}</td>
-                <td>{{searchResult.invoiceType}}</td>
+                <td>{{searchResult.totalCost}}</td>
               </tr>
               {% endfor %}
             </tbody>
