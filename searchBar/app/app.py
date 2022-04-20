@@ -1,3 +1,4 @@
+from re import search
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from numpy import full
@@ -48,11 +49,17 @@ def renderSearchPage(value):
         # pounds distributed
         from models import PurchasedProduce
         pounds = PurchasedProduce.query.with_entities(
-            func.sum(PurchasedProduce.)).all()
-        return render_template("selectError.html")
+            func.sum(PurchasedProduce.quantity)).all()
+        purchasedQuantity = PurchasedProduce.query.all()
+        return render_template("search.html", searchResults=purchasedQuantity, value=pounds)
     elif value == "4":
         # meals supplemented
-        return render_template("selectError.html")
+        from models import Invoices
+        pounds = Invoices.query.with_entities(
+            func.sum(Invoices.totalPound)).all()
+        mealSupplemented = pounds[0][0]/6
+        invoices = Invoices.query.all()
+        return render_template("search.html", value=mealSupplemented, searchResults=invoices)
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
