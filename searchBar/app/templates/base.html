@@ -51,12 +51,15 @@
         </div>
       </nav>
       {% block main%}
-      {%endblock%}
+      {% endblock %}
       <br style="margin-top: 30%;">
+      {% block page_scripts %}
+      {% endblock %}
       <footer>
           <div>
             <span class="text-muted">All rights reserved by Feeding Kentucky</span>
           </div>
       </footer>
+ 
   </body>
 </html>

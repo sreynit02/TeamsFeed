@@ -1,46 +1,48 @@
 {%extends 'base.html' %}
+<!-- <script {{url_for('static',filename="/app/static/index.js")}}></script> -->
 {% block main %}
-<script src="static/index.js"></script>
-<html>
-    <head>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-      <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-  
-        function drawChart() {
-  
-          var data = google.visualization.arrayToDataTable([
-            ['Task', 'Hours per Day'],
-            [,11],
-            ['Eat',      2],
-            ['Commute',  2],
-            ['Watch TV', 2],
-            ['Sleep',    7]
-          ]);
-  
-          var options = {
-            title: 'My Daily Activities'
-          };
+<script type="text/javascript"
+src="{{ url_for('static', filename='search.js') }}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<p id="results">{{searchResults}}</p>
+<p id="results">{{variableType}}</p>
+
+    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+    <!-- <script type="text/javascript">
+      // let results=document.getElementById("#results")
+      // console.log("results"+results)
+      // google.charts.load('current', {'packages':['corechart']});
+      // google.charts.setOnLoadCallback(drawChart);
+      // let results2 = $("meta[property='results']").attr('content');
+      // console.log(results2)
     
-          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-          chart.draw(data, options);
-        }
+      // function drawChart() {
 
+      //   var data = google.visualization.arrayToDataTable([
+      //     ['Task', 'Hours per Day'],
+      //     [,11],
+      //     ['Eat',      2],
+      //     ['Commute',  2],
+      //     ['Watch TV', 2],
+      //     ['Sleep',    7]
+      //   ]);
 
-
-
-
-        
-      </script>
-    
-    </head>
-    <body>
+      //   var options = {
+      //     title: 'My Daily Activities'
+      //   };
+  
+      //   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      //   chart.draw(data, options);
+      // }
+    </script>
+     -->
+    <div>
       <div id="piechart" style="width: 900px; height: 500px;"></div>
-    </body>
-        <script type="text/javascript">
+    </div>
+        <!-- <script type="text/javascript">
           results=getResults({searchResults});
-        </script>
+        </script> -->
+        <meta property="results" content="{{ searchResults}}">
         <table class="table table-hover">
             <thead>
               <tr>
@@ -58,5 +60,5 @@
             </tbody>
         </table>
 
-</html>
+<!-- </html> -->
 {%endblock%}
