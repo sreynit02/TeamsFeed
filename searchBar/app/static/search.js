@@ -7,8 +7,8 @@ $(document).ready(function(){
     // google.charts.load('current', {'packages':['corechart']});
     //   google.charts.setOnLoadCallback(drawChart);
       let results2 = $("meta[property='results']").attr('content');
-      console.log(type(results2));
-      console.log(results2[3])
+      console.log(typeof(results2)); // its a string :((
+      // console.log(results2[3])
       // listLength=results2.length;
       // resultArray=[]
       // for (let i=0;i<listLength;i++){
