@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, func
 
@@ -34,8 +34,14 @@ def renderSearchPage(value):
         from models import Farmer
         counties = Farmer.query.with_entities(Farmer.county, func.count(
             Farmer.county)).group_by(Farmer.county).all()
-        variableType = type(counties)
-        return render_template("search.html", searchResults=counties, variableType=variableType)
+        countyList = []
+        for county in counties:
+            tempList = []
+            tempList.append(county[0])
+            tempList.append(county[1])
+            countyList.append(tempList)
+        # variableType = jsonify(counties)
+        return render_template("search.html", searchResults=counties, variableType=countyList)
     elif value == "5":
         # farmers that participate in program
         return render_template("selectError.html")
