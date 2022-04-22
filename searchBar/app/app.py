@@ -40,9 +40,12 @@ def renderSearchPage(value):
             tempList.append(county[0])
             tempList.append(county[1])
             countyList.append(tempList)
-        # variableType = jsonify(counties)
-        return render_template("search.html", searchResults=counties, variableType=countyList)
-    elif value == "5":
+        # countyList = jsonify(counties)
+        # countyList = []
+        # for county in counties:
+        #     countyList.append(county[0])
+        return render_template("search.html", searchResults=counties, countyList=countyList)
+    elif value == "6":
         # farmers that participate in program
         return render_template("selectError.html")
     elif value == "6":
