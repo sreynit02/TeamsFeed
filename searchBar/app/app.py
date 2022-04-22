@@ -1,7 +1,7 @@
 from re import search
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from numpy import full
+from numpy import average, full
 from sqlalchemy import create_engine, func
 
 
@@ -63,20 +63,23 @@ def renderSearchPage(value):
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
+        farmers = Farmer.query.all()
+        return render_template("search.html", searchResults=farmers)
+    elif value == "6":
+        # which Kentucky counties are the farmers from
+        from models import Farmer
         counties = Farmer.query.with_entities(Farmer.county, func.count(
             Farmer.county)).group_by(Farmer.county).all()
-        return render_template("search.html", searchResults=counties, value="")
-    elif value == "6":
-        # farmers that participate in program
-        return render_template("selectError.html")
+        return render_template("search.html", searchResults=counties)
     elif value == "7":
-        # farmers that participate in program
-        return render_template("selectError.html")
+        # Average amount paid to farmers
+        from models import Invoices
+        average = Invoices.query.with_entities(
+            func.avg(Invoices.totalCost)).all()
+        invoices = Invoices.query.all()
+        return render_template("search.html", value=average, searchResults=invoices)
     elif value == "8":
-        # farmers that participate in program
-        return render_template("selectError.html")
-    elif value == "5":
-        # farmers that participate in program
+        # Farmers who received more than $1000
         return render_template("selectError.html")
     else:
         return render_template("selectError.html")
