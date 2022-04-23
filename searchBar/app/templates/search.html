@@ -1,5 +1,7 @@
 {%extends 'base.html' %}
 {% block main %}
+        <p>Total cost: {{value}}</p>
+        <p>Results: {{searchResults}}</p>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
     </div>
@@ -12,10 +14,18 @@
             </thead>
             <tbody>
                 {% for searchResult in searchResults %}
-              <tr>
-                <td>{{searchResult[0]}}</td>
-                <td>{{searchResult[1]}}</td>
-              </tr>
+              <!-- <tr>
+                <td>{{searchResult.foodID}}</td>
+                <td>{{searchResult.foodType}}</td>
+              </tr> -->
+              <!-- <tr>
+                <td>{{searchResult.invoiceNo}}</td>
+                <td>{{searchResult.totalCost}}</td>
+              </tr> -->
+                <tr>
+                  <td>{{searchResult[0]}}</td>
+                  <td>{{searchResult[1]}}</td>
+                </tr>
               {% endfor %}
             </tbody>
         </table>
