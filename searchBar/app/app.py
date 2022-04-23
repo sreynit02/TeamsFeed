@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, func
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://sreynit:berea@127.0.0.1:3307/feedingky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -79,7 +79,11 @@ def renderSearchPage(value):
         invoices = Invoices.query.all()
         return render_template("search.html", value=average, searchResults=invoices)
     elif value == "8":
+        from models import Invoices
+        from models import Farmer
         # Farmers who received more than $1000
-        return render_template("selectError.html")
+        farmerGrant = Invoices.query.with_entities(Invoices.farmerID).filter(Invoices.totalCost > 1000).distinct()
+        farmerName = Farmer.query.with_entities(Farmer.firstName).filter(Farmer.farmerID == farmerGrant).distinct()
+        return render_template("search.html", farmerName = farmerName)
     else:
         return render_template("selectError.html")
