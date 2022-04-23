@@ -1,5 +1,8 @@
 {%extends 'base.html' %}
 {% block main %}
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    </div>
         <table class="table table-hover">
             <thead>
               <tr>
@@ -16,6 +19,33 @@
               {% endfor %}
             </tbody>
         </table>
-
-
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+        
+          function drawChart() {
+            let results={{ countyList | safe }}
+            console.log(results)
+            //console.log(typeof(results),results)
+            resultsList=[]
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'County');
+            data.addColumn('number', 'Number of farmers in county');
+            for (let i=0;i<results.length;i++){
+              tempArray=[]
+              tempArray.push(results[i][0])
+              tempArray.push(results[i][1])
+              console.log(tempArray)
+              // create an Array to make sure everything is an array
+              data.addRow(Array.from(tempArray))
+            }
+    
+            var options = {
+              title: 'Number of Farmers from each county'
+            };
+      
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+          }
+        </script>
 {%endblock%}
