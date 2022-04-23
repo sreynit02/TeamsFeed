@@ -1,5 +1,4 @@
-from re import search
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from numpy import average, full
 from sqlalchemy import create_engine, func
@@ -16,7 +15,7 @@ def hello_world():
     return render_template("index.html")
 
 
-@app.route("/search/<value>", methods=['GET'])
+@app.route("/search/<value>", methods=['GET', 'POST'])
 # Function call to render search results based on the option selected from the dropdown menu
 def renderSearchPage(value):
     if value == "1":
@@ -70,7 +69,17 @@ def renderSearchPage(value):
         from models import Farmer
         counties = Farmer.query.with_entities(Farmer.county, func.count(
             Farmer.county)).group_by(Farmer.county).all()
-        return render_template("search.html", searchResults=counties)
+        countyList = []
+        for county in counties:
+            tempList = []
+            tempList.append(county[0])
+            tempList.append(county[1])
+            countyList.append(tempList)
+        # countyList = jsonify(counties)
+        # countyList = []
+        # for county in counties:
+        #     countyList.append(county[0])
+        return render_template("search.html", searchResults=counties, countyList=countyList)
     elif value == "7":
         # Average amount paid to farmers
         from models import Invoices
