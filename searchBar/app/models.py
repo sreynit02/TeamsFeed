@@ -3,7 +3,7 @@ from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.mysql import TINYINT
 from app import db
 
-
+#import all tables from schema and set restraints to each column
 class Farmer(db.Model):
     __tablename__ = 'Farmer'
     farmerID = db.Column(db.Integer,  nullable=False, primary_key=True)
@@ -117,7 +117,7 @@ class PurchasedProduce(db.Model):
     __tablename__ = 'PurchasedProduce'
     pfID = db.Column(db.Integer, nullable=False, primary_key=True)
     foodID = db.Column(db.Integer, db.ForeignKey(
-        'Food.foodID'), default='NULL')  # need to make this foreign key
+        'Food.foodID'), default='NULL')
     quantity = db.Column(db.Integer, nullable=False)
     unitPrice = db.Column(db.Float, nullable=False)
     unit = db.Column(db.String(20), nullable=False)
@@ -164,22 +164,3 @@ class Invoices(db.Model):
 
     def __repr__(self):
         return " {} {}".format(self.invoiceNo,  self.totalCost)
-
-
-#resultFarmer = Farmer.query.all()
-#resultFood = Food.query.all()
-# resultAuction = Auction.query.all()
-# resultFoodBank = FoodBank.query.all()
-# resultFunder = Funder.query.all()
-# resultGrant = Grant.query.all()
-resultpurchasedProduce = PurchasedProduce.query.with_entities(
-    PurchasedProduce.foodID, Food.foodType)
-# resultInvoice = Invoices.query.all()
-print(resultpurchasedProduce)
-# print(resultInvoice)
-# print(resultFunder)
-# print (resultFarmer)
-# print (resultFood)
-# print (resultAuction)
-# print (resultFoodBank)
-# print (resultGrant)

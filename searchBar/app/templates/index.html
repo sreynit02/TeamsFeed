@@ -1,6 +1,7 @@
 {%extends 'base.html' %}
 {% block main %}
 <script src="static/index.js"></script>
+<!-- This is the dropdown menu in the search bar. -->
     <div class="input-group">
         <select class="custom-select" id="searchDropdown">
           <option selected>Search FeedkingKY database for..</option>
@@ -13,11 +14,12 @@
           <option value="7">What was the average amount paid per farmer?</option>
           <option value="8">How many farmers received more than $10,000?</option>
         </select>
+<!-- search button -->
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" id="SearchButton">Search</button>
         </div>
       </div>
-    
+
 <div class="row">
     <div class="col-lg-12">
         <h3>Farms to Food Banks Impact Report for 2022-2023 </h3>
