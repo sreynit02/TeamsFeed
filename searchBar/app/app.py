@@ -3,18 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from numpy import average, full
 from sqlalchemy import create_engine, func
 
-
+#create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://sreynit:berea@127.0.0.1:3307/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
-
+#default function that calls main page
 @app.route("/")
-def hello_world():
+def render_homepage():
     return render_template("index.html")
 
-
+#run the route that is connected to the search page
 @app.route("/search/<value>", methods=['GET', 'POST'])
 # Function call to render search results based on the option selected from the dropdown menu
 def renderSearchPage(value):

@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
   <body>
+    <!-- create navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white" style="height: 10%;">
         <a class="navbar-brand" href="/">
             <img style="height=50%" src="https://www.pythonanywhere.com/user/kaffb/files/home/kaffb/dev/static/voeden_feeding_kentucky.jpg" class="img-fluid">
@@ -50,11 +51,10 @@
           </ul>
         </div>
       </nav>
+      <!-- add html for specific page -->
       {% block main%}
       {% endblock %}
       <br style="margin-top: 30%;">
-      {% block page_scripts %}
-      {% endblock %}
       <footer>
           <div>
             <span class="text-muted">All rights reserved by Feeding Kentucky</span>
