@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, func
 
 #create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -35,14 +35,6 @@ def renderSearchPage(value):
             Food.foodType == "produce").distinct()
         producePurchased = PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.count(
             PurchasedProduce.foodID)).group_by(PurchasedProduce.foodID).filter(PurchasedProduce.foodID.in_(produce)).all()
-        # Need to find the foodType in produce from the foodID in producePurchased
-        # Using a join
-        # result = PurchasedProduce.query.join(Food, full=True)
-        # purchasedIDs=[]
-        # for produce in producePurchased:
-        #     purchasedIDs.append(producePurchased[0])
-        # finalResults=[]
-
         return render_template("search.html", searchResults=producePurchased)
     elif value == "3":
         # pounds distributed
@@ -75,10 +67,6 @@ def renderSearchPage(value):
             tempList.append(county[0])
             tempList.append(county[1])
             countyList.append(tempList)
-        # countyList = jsonify(counties)
-        # countyList = []
-        # for county in counties:
-        #     countyList.append(county[0])
         return render_template("search.html", searchResults=counties, countyList=countyList)
     elif value == "7":
         # Average amount paid to farmers
@@ -90,8 +78,8 @@ def renderSearchPage(value):
     elif value == "8":
         from models import Invoices
         from models import Farmer
-        # Farmers who received more than $1000
-        farmerGrant = Invoices.query.with_entities(Invoices.farmerID).filter(Invoices.totalCost > 1000).distinct()
+        # Farmers who received more than $10000
+        farmerGrant = Invoices.query.with_entities(Invoices.farmerID).filter(Invoices.totalCost > 10000).distinct()
         farmerName = Farmer.query.with_entities(Farmer.firstName).filter(Farmer.farmerID == farmerGrant).distinct()
         return render_template("search.html", farmerName = farmerName)
     else:
