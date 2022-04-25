@@ -11,17 +11,36 @@
         <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">County</th>
-                <th scope="col">Number of farmers</th>
+                {%for header in tableHeader%}
+
+                <th scope="col">{{header}}</th>
+            
+                {%endfor %}
               </tr>
             </thead>
             <tbody>
+              {% if option == "1" or option == "4" %}
                 {% for searchResult in searchResults %}
                 <tr>
-                  <td>{{searchResult[0]}}</td>
-                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult.invoiceNo}}</td>
+                  <td>{{searchResult.dateReceived}}</td>
+                  <td>{{searchResult.datePaid}}</td>
+                  <td>{{searchResult.totalPound}}</td>
+                  <td>{{searchResult.totalCost}}</td>
                 </tr>
               {% endfor %}
+              {% elif option == "5" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td>
+                  <td>{{searchResult.phoneNumber}}</td>
+                  <td>{{searchResult.city}}</td>
+                  <td>{{searchResult.county}}</td>
+                  <td>{{searchResult.state}}</td>
+              </tr>
+              {% endfor %}
+              {% endif%}
             </tbody>
         </table>
         <script type="text/javascript">
