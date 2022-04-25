@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, func
 
 #create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -80,7 +80,8 @@ def renderSearchPage(value):
         from models import Farmer
         # Farmers who received more than $10000
         farmerGrant = Invoices.query.with_entities(Invoices.farmerID).filter(Invoices.totalCost > 10000).distinct()
-        farmerName = Farmer.query.with_entities(Farmer.firstName).filter(Farmer.farmerID == farmerGrant).distinct()
-        return render_template("search.html", farmerName = farmerName)
+        farmerName = Farmer.query.with_entities(Farmer.firstName).filter(Farmer.farmerID.in_(farmerGrant)).all()
+        print(list(farmerName))
+        return render_template("search.html", searchResults = farmerName)
     else:
         return render_template("selectError.html")
