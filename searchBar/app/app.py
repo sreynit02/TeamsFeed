@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, func
 
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://User1:Berea#CSC330@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -29,8 +29,9 @@ def renderSearchPage(value):
             func.sum(Invoices.totalCost)).all()
         # query all invoices to show in table
         invoices = Invoices.query.all()
-        tableHeader = ["Invoice Number", "Date Received", "Date Paid", "Total Pounds", "Total Cost"]
-        return render_template("search.html", tableHeader = tableHeader, option = value, value=totalCost, searchResults=invoices)
+        tableHeader = ["Invoice Number", "Date Received",
+                       "Date Paid", "Total Pounds", "Total Cost"]
+        return render_template("search.html", tableHeader=tableHeader, option=value, value=totalCost, searchResults=invoices)
     elif value == "2":
         #  types of produce query
         from models import Food
@@ -56,14 +57,16 @@ def renderSearchPage(value):
             func.sum(Invoices.totalPound)).all()
         mealSupplemented = pounds[0][0]/6
         invoices = Invoices.query.all()
-        tableHeader = ["Invoice Number", "Date Received", "Date Paid", "Total Pounds", "Total Cost"]
-        return render_template("search.html", option = value, tableHeader = tableHeader, value=mealSupplemented, searchResults=invoices)
+        tableHeader = ["Invoice Number", "Date Received",
+                       "Date Paid", "Total Pounds", "Total Cost"]
+        return render_template("search.html", option=value, tableHeader=tableHeader, value=mealSupplemented, searchResults=invoices)
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
         farmers = Farmer.query.all()
-        tableHeader = ["First Name", "Last Name", "Phone Number", "City","County", "State"]
-        return render_template("search.html", tableHeader = tableHeader, option = value, searchResults=farmers)
+        tableHeader = ["First Name", "Last Name",
+                       "Phone Number", "City", "County", "State"]
+        return render_template("search.html", tableHeader=tableHeader, option=value, searchResults=farmers)
     elif value == "6":
         # which Kentucky counties are the farmers from
         from models import Farmer
@@ -76,7 +79,7 @@ def renderSearchPage(value):
             tempList.append(county[1])
             countyList.append(tempList)
         tableHeader = ["County", "Number of Farmers"]
-        return render_template("search.html", tableHeader = tableHeader, option = value, searchResults=counties, countyList=countyList)
+        return render_template("search.html", tableHeader=tableHeader, option=value, searchResults=counties, countyList=countyList)
     elif value == "7":
         # Average amount paid to farmers
         from models import Invoices
