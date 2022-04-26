@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, func
 
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://User1:Berea#CSC330@127.0.0.1:3306/feedingky"
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -86,7 +86,9 @@ def renderSearchPage(value):
         average = Invoices.query.with_entities(
             func.avg(Invoices.totalCost)).all()
         invoices = Invoices.query.all()
-        return render_template("search.html", value=average, searchResults=invoices)
+        tableHeader = ["Invoice Number", "Date Received",
+                       "Date Paid", "Total Pounds", "Total Cost"]
+        return render_template("search.html", tableHeader=tableHeader, option = value, value=average, searchResults=invoices)
     elif value == "8":
         from models import Invoices
         from models import Farmer
