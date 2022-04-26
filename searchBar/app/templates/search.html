@@ -1,10 +1,12 @@
 {%extends 'base.html' %}
 {% block main %}
-        <p>Total cost: {{value}}</p>
+        <!-- <p>Total cost: {{value}}</p>
         <p>Results: {{searchResults}}</p>
+        <p>ChartResults: {{chartList}}</p> -->
 <!-- import googlechart api -->
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- create a div for piechart -->
+    <h2 style="margin-left: 10%;">{{chartTitle}}</h2>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
 <!-- create table for search result -->
     </div>
@@ -40,6 +42,29 @@
                   <td>{{searchResult.state}}</td>
               </tr>
               {% endfor %}
+              {% elif option == "6" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult[0]}}</td>
+                  <td>{{searchResult[1]}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "7" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "8" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td> 
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
               {% endif%}
             </tbody>
         </table>
@@ -50,7 +75,7 @@
           //create function to draw chart with data
           function drawChart() {
           //use jinja to get searchlist that was passed from app.py and keep the list's datatype consistent using safe filter
-            let results={{ countyList | safe }} 
+            let results={{ chartList | safe }} 
           //create an empty list
             resultsList=[]
           //create a new data table with the google chart api
@@ -68,7 +93,7 @@
             }
           //add title to pie chart
             var options = {
-              title: 'Number of Farmers from each county'
+              // title: ''
             };
           //displays piechart created in the google api in the div with the id = piechart
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
