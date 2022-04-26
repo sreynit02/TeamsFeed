@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from numpy import average, full
 from sqlalchemy import create_engine, func
+from sqlalchemy.orm import sessionmaker
 
 #create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
@@ -26,16 +27,25 @@ def renderSearchPage(value):
         # query all invoices to show in table
         invoices = Invoices.query.all()
         return render_template("search.html", value=totalCost, searchResults=invoices)
+
+
+
+
+
     elif value == "2":
         #  types of produce query
         from models import Food
         from models import PurchasedProduce
-        # get distinct food with produce type
-        produce = Food.query.with_entities(Food.foodID).filter(
-            Food.foodType == "produce").distinct()
-        producePurchased = PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.count(
-            PurchasedProduce.foodID)).group_by(PurchasedProduce.foodID).filter(PurchasedProduce.foodID.in_(produce)).all()
+        
+        producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
+        
+
+
         return render_template("search.html", searchResults=producePurchased)
+
+
+
+
     elif value == "3":
         # pounds distributed
         from models import PurchasedProduce
