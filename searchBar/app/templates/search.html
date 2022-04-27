@@ -1,27 +1,84 @@
 {%extends 'base.html' %}
 {% block main %}
         <p>Total cost: {{value}}</p>
-        <p>Results: {{searchResults}}</p>
+        <!-- <p>Results: {{searchResults}}</p>
+        <p>ChartResults: {{chartList}}</p>  -->
 <!-- import googlechart api -->
 <script src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
 <!-- create a div for piechart -->
+    <h2 style="margin-left: 10%;">{{chartTitle}}</h2>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
 <!-- create table for search result -->
     </div>
-        <table class="table table-hover">
+        <table id= "resultTable" class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">County</th>
-                <th scope="col">Number of farmers</th>
+                {%for header in tableHeader%}
+
+                <th scope="col">{{header}}</th>
+            
+                {%endfor %}
               </tr>
             </thead>
             <tbody>
+              {% if option == "1" or option == "4" or option == "7" %}
                 {% for searchResult in searchResults %}
                 <tr>
-                  <td>{{searchResult[0]}}</td>
-                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult.invoiceNo}}</td>
+                  <td>{{searchResult.dateReceived}}</td>
+                  <td>{{searchResult.datePaid}}</td>
+                  <td>{{searchResult.totalPound}}</td>
+                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.grantID}}</td>
                 </tr>
               {% endfor %}
+              {% elif option == "3" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.foodID}}</td>
+                  <td>{{searchResult.quantity}}</td>
+                  <td>{{searchResult.unit}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "5" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td>
+                  <td>{{searchResult.phoneNumber}}</td>
+                  <td>{{searchResult.city}}</td>
+                  <td>{{searchResult.county}}</td>
+                  <td>{{searchResult.state}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "6" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult[0]}}</td>
+                  <td>{{searchResult[1]}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "7" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "8" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td> 
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
+              {% endif%}
             </tbody>
         </table>
         <script type="text/javascript">
@@ -31,7 +88,7 @@
           //create function to draw chart with data
           function drawChart() {
           //use jinja to get searchlist that was passed from app.py and keep the list's datatype consistent using safe filter
-            let results={{ countyList | safe }} 
+            let results={{ chartList | safe }} 
           //create an empty list
             resultsList=[]
           //create a new data table with the google chart api
@@ -49,11 +106,17 @@
             }
           //add title to pie chart
             var options = {
-              title: 'Number of Farmers from each county'
+              // title: ''
             };
           //displays piechart created in the google api in the div with the id = piechart
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
             chart.draw(data, options);
           }
+        </script>
+<!-- Displays the chart only one 10,25,50 or 100 rows at time, searches the result table-->
+        <script>
+          $(document).ready(function(){
+              $('#resultTable').dataTable();
+          });
         </script>
 {%endblock%}
