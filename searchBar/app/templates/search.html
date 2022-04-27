@@ -1,8 +1,8 @@
 {%extends 'base.html' %}
 {% block main %}
-        <!-- <p>Total cost: {{value}}</p>
-        <p>Results: {{searchResults}}</p>
-        <p>ChartResults: {{chartList}}</p> -->
+        <p>Total cost: {{value}}</p>
+        <!-- <p>Results: {{searchResults}}</p>
+        <p>ChartResults: {{chartList}}</p>  -->
 <!-- import googlechart api -->
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- create a div for piechart -->
@@ -29,7 +29,16 @@
                   <td>{{searchResult.datePaid}}</td>
                   <td>{{searchResult.totalPound}}</td>
                   <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.grantID}}</td>
                 </tr>
+              {% endfor %}
+              {% elif option == "3" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult.foodID}}</td>
+                  <td>{{searchResult.quantity}}</td>
+                  <td>{{searchResult.unit}}</td>
+              </tr>
               {% endfor %}
               {% elif option == "5" %}
               {% for searchResult in searchResults %}
