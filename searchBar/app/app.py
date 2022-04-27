@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -55,30 +55,34 @@ def renderSearchPage(value):
         from models import PurchasedProduce
         # get distinct food with produce type
         producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
-        
         title="Amount of produce purchased per food type"
         tableHeader = ["Food name", "Quantity of produce"]
-        return render_template("search.html", chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader)
+        foodCostList = []
+        for produce in producePurchased:
+            tempList = []
+            tempList.append(str(produce[1]))
+            tempList.append(int(produce[2]))
+            foodCostList.append(tempList)
+        return render_template("search.html", option=value, chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader, chartList=foodCostList)
+        
     elif value == "3":
         # pounds distributed
         from models import PurchasedProduce
+        from models import Food
         pounds = PurchasedProduce.query.with_entities(
             func.sum(PurchasedProduce.quantity)).all()
-        # Table displays the food name, produce purchased and units
-        # TO DO: Get food name after joining with food table
-        purchasedQuantity = PurchasedProduce.query.all()
-        # Pie chart displays the total quantity per foodID
-        foodQuantities=PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.sum(PurchasedProduce.quantity)).group_by(PurchasedProduce.foodID).all()
+        food = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
+        #foodQuantities=PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.sum(PurchasedProduce.quantity)).group_by(PurchasedProduce.foodID).all()
         foodQuntityList = []
-        for quantity in foodQuantities:
+        for quantity in food:
             tempList = []
-            tempList.append(str(quantity[0]))
-            tempList.append(int(quantity[1]))
+            tempList.append(str(quantity[1]))
+            tempList.append(int(quantity[2]))
             foodQuntityList.append(tempList)
         title="Total quantity of produce in pounds purchased for each food type "
         summaryTitle="Total pounds purchased"
         tableHeader = ["Food Name", "Total produce purchased","units"]
-        return render_template("search.html", option=value, chartTitle=title,chartList=foodQuntityList,searchResults=purchasedQuantity, summaryValue=pounds,summaryTitle=summaryTitle, tableHeader=tableHeader)
+        return render_template("search.html", option=value, chartTitle=title,chartList=foodQuntityList,searchResults=food, summaryValue=pounds,summaryTitle=summaryTitle, tableHeader=tableHeader)
     elif value == "4":
         # meals supplemented = total Pounds/0.06
         from models import Invoices
