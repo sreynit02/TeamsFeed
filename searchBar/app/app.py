@@ -6,7 +6,9 @@ from sqlalchemy.orm import sessionmaker
 
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -27,11 +29,12 @@ def renderSearchPage(value):
         # total funding spent to show in summary
         from models import Invoices
         totalCost = Invoices.query.with_entities(
-            func.sum(Invoices.totalCost)).all()
+            func.sum(Invoices.totalCost)).all()[0][0]
         # query all invoices to show in table
         invoices = Invoices.query.all()
 
         # TO DO: Pie chart to display the total funding from each grant: Join the invoices and grant tables
+        # TO DO: Should this total spending be restricted to the annual year?
         FundingCosts = Invoices.query.with_entities(Invoices.grantID, func.sum(Invoices.totalCost)).group_by(Invoices.grantID).all()
         fundingList = []
         for funding in FundingCosts:
@@ -40,9 +43,11 @@ def renderSearchPage(value):
             tempList.append(funding[1])
             fundingList.append(tempList)
         title="Total funding per grant"
+        summaryTitle="The total funding spent"
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant used"]
-        return render_template("search.html", tableHeader=tableHeader,chartTitle=title, option=value, value=totalCost, chartList=fundingList,searchResults=invoices)
+
+        return render_template("search.html", tableHeader=tableHeader,chartTitle=title, option=value, summaryValue=totalCost, summaryTitle=summaryTitle, chartList=fundingList,searchResults=invoices)
 
     elif value == "2":
         #  types of produce query
@@ -71,8 +76,9 @@ def renderSearchPage(value):
             tempList.append(int(quantity[1]))
             foodQuntityList.append(tempList)
         title="Total quantity of produce in pounds purchased for each food type "
+        summaryTitle="Total pounds purchased"
         tableHeader = ["Food Name", "Total produce purchased","units"]
-        return render_template("search.html", option=value, chartTitle=title,chartList=foodQuntityList,searchResults=purchasedQuantity, value=pounds, tableHeader=tableHeader)
+        return render_template("search.html", option=value, chartTitle=title,chartList=foodQuntityList,searchResults=purchasedQuantity, summaryValue=pounds,summaryTitle=summaryTitle, tableHeader=tableHeader)
     elif value == "4":
         # meals supplemented = total Pounds/0.06
         from models import Invoices
@@ -94,7 +100,8 @@ def renderSearchPage(value):
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant"]
         title="Number of meals supplemented by different grants"
-        return render_template("search.html",chartTitle=title, option=value, tableHeader=tableHeader, value=mealSupplemented, searchResults=invoices, chartList=GrantTotalList)
+        summaryTitle="Total Meals supplemented"
+        return render_template("search.html",chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
@@ -133,7 +140,7 @@ def renderSearchPage(value):
         #  Might be better displayed with some other graph
         from models import Invoices
         average = Invoices.query.with_entities(
-            func.avg(Invoices.totalCost)).all()
+            func.avg(Invoices.totalCost)).all()[0][0]
         invoices = Invoices.query.all()
         FarmerPayment=Invoices.query.with_entities(Invoices.farmerID, func.sum(Invoices.totalCost)).group_by(Invoices.farmerID).all()
         paymentList = []
@@ -143,9 +150,10 @@ def renderSearchPage(value):
             tempList.append(payment[1])
             paymentList.append(tempList)
         title="Amount paid to every farmer"
+        summaryTitle="Average amount paid to farmers"
         tableHeader = ["Invoice Number","Date received","Date Paid",
                        "Total Pounds", "Total Cost","Grant used"]
-        return render_template("search.html", chartTitle=title,option=value, chartList=paymentList,value=average, searchResults=invoices, tableHeader=tableHeader)
+        return render_template("search.html", chartTitle=title,option=value, chartList=paymentList,summaryValue=average,summaryTitle=summaryTitle, searchResults=invoices, tableHeader=tableHeader)
         # tableHeader = ["Invoice Number", "Date Received",
         #                "Date Paid", "Total Pounds", "Total Cost"]
         # return render_template("search.html", tableHeader=tableHeader, option = value, value=average, searchResults=invoices)

@@ -1,6 +1,12 @@
 {%extends 'base.html' %}
 {% block main %}
-        <p>Total cost: {{value}}</p>
+{%if summaryValue%}
+<div style="margin: 5%;">
+  <h3 style="color: green;">Summary of {{summaryTitle}}</h3>
+  <p>{{summaryTitle}}: {{summaryValue}}</p>
+</div>
+
+{%endif%}
         <!-- <p>Results: {{searchResults}}</p>
         <p>ChartResults: {{chartList}}</p>  -->
 <!-- import googlechart api -->
@@ -10,8 +16,8 @@
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 
 <!-- create a div for piechart -->
-    <h2 style="margin-left: 10%;">{{chartTitle}}</h2>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <h2 style="text-align: center;">{{chartTitle}}</h2>
+    <div id="piechart" style="width: 900px; height: 500px;display:table;margin-right: auto;margin-left: auto;"></div>
 <!-- create table for search result -->
     </div>
         <table id= "resultTable" class="table table-hover">
