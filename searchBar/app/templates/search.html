@@ -7,8 +7,8 @@
 </div>
 
 {%endif%}
-        <!-- <p>Results: {{searchResults}}</p>
-        <p>ChartResults: {{chartList}}</p>  -->
+        <!--<p>Results: {{searchResults}}</p>
+        <p>ChartResults: {{chartList}}</p> -->
 <!-- import googlechart api -->
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
@@ -42,12 +42,22 @@
                   <td>{{searchResult.grantID}}</td>
                 </tr>
               {% endfor %}
+              {% elif option == "2" %}
+              {% for searchResult in searchResults %}
+              <tr>
+                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult[2]}}</td>
+                
+              </tr>
+              {% endfor %}
               {% elif option == "3" %}
               {% for searchResult in searchResults %}
               <tr>
-                  <td>{{searchResult.foodID}}</td>
-                  <td>{{searchResult.quantity}}</td>
-                  <td>{{searchResult.unit}}</td>
+                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult[2]}}</td>
+                  <td>pounds</td>
+                  
+                  
               </tr>
               {% endfor %}
               {% elif option == "5" %}
