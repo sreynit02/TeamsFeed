@@ -3,13 +3,18 @@ from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.mysql import TINYINT
 from app import db
 
-#import all tables from schema and set restraints to each column
+# import all tables from schema and set restraints to each column
+
+
 class Farmer(db.Model):
     __tablename__ = 'Farmer'
     farmerID = db.Column(db.Integer,  nullable=False, primary_key=True)
     firstName = db.Column(db.String(50), nullable=False)
     lastName = db.Column(db.String(50), nullable=False)
     county = db.Column(db.String(50), nullable=False)
+    city = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.String(2), default='KY')
+    phoneNumber = db.Column(db.String(12), default='NULL')
     UniqueConstraint(farmerID)
     foreignKeyFarmer = db.relationship('Invoices', back_populates='farmer_ID')
 
