@@ -2,10 +2,13 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from numpy import average, full
 from sqlalchemy import create_engine, func
+from sqlalchemy.orm import sessionmaker
 
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -29,6 +32,7 @@ def renderSearchPage(value):
             func.sum(Invoices.totalCost)).all()[0][0]
         # query all invoices to show in table
         invoices = Invoices.query.all()
+
         # TO DO: Pie chart to display the total funding from each grant: Join the invoices and grant tables
         # TO DO: Should this total spending be restricted to the annual year?
         FundingCosts = Invoices.query.with_entities(Invoices.grantID, func.sum(Invoices.totalCost)).group_by(Invoices.grantID).all()
@@ -42,16 +46,16 @@ def renderSearchPage(value):
         summaryTitle="The total funding spent"
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant used"]
+
         return render_template("search.html", tableHeader=tableHeader,chartTitle=title, option=value, summaryValue=totalCost, summaryTitle=summaryTitle, chartList=fundingList,searchResults=invoices)
+
     elif value == "2":
         #  types of produce query
         from models import Food
         from models import PurchasedProduce
         # get distinct food with produce type
-        produce = Food.query.with_entities(Food.foodID).filter(
-            Food.foodType == "produce").distinct()
-        producePurchased = PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.count(
-            PurchasedProduce.foodID)).group_by(PurchasedProduce.foodID).filter(PurchasedProduce.foodID.in_(produce)).all()
+        producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
+        
         title="Amount of produce purchased per food type"
         tableHeader = ["Food name", "Quantity of produce"]
         return render_template("search.html", chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader)
