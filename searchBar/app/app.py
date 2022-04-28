@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://User1:Berea#CSC330@127.0.0.1:3306/feedingky"
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -91,6 +91,7 @@ def renderSearchPage(value):
         mealSupplemented = pounds[0][0]/6
         invoices = Invoices.query.all()
         # Pie chart displays the total meals supplied by each grant
+        # This can be best represented as a bar graph
         GrantTotal = Invoices.query.with_entities(Invoices.grantID, func.sum(
             Invoices.totalCost)/0.06).group_by(Invoices.grantID).all()
         # TO DO: Get grant Name from grantID so as to display grant names instead of ID
