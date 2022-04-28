@@ -1,8 +1,10 @@
+from decimal import ROUND_UP
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from numpy import average, full
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
+from decimal import Decimal
 
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
@@ -31,6 +33,8 @@ def renderSearchPage(value):
         from models import Grant
         totalCost = Invoices.query.with_entities(
             func.sum(Invoices.totalCost)).all()[0][0]
+        totalCost = Decimal(totalCost)
+        totalCost = round(totalCost, 2)
         # query all invoices to show in table
         invoices = Invoices.query.all()
 
@@ -70,8 +74,8 @@ def renderSearchPage(value):
         # pounds distributed
         from models import PurchasedProduce
         from models import Food
-        pounds = PurchasedProduce.query.with_entities(
-            func.sum(PurchasedProduce.quantity)).all()[0][0]
+        pounds = PurchasedProduce.query.with_entities(func.sum(PurchasedProduce.quantity)).all()[0][0]
+
         food = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
         #foodQuantities=PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.sum(PurchasedProduce.quantity)).group_by(PurchasedProduce.foodID).all()
         foodQuntityList = []
