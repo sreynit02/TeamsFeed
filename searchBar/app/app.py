@@ -64,7 +64,6 @@ def renderSearchPage(value):
             tempList.append(int(produce[2]))
             foodCostList.append(tempList)
         return render_template("search.html", option=value, chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader, chartList=foodCostList)
-        
     elif value == "3":
         # pounds distributed
         from models import PurchasedProduce
@@ -105,7 +104,7 @@ def renderSearchPage(value):
                        "Date Paid", "Total Pounds", "Total Cost","Grant"]
         title="Number of meals supplemented by different grants"
         summaryTitle="Total Meals supplemented"
-        return render_template("search.html",chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
+        return render_template("searchColumn.html",chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
@@ -173,6 +172,6 @@ def renderSearchPage(value):
         title="Farmers paid more than $10,000"
         tableHeader = ["Farmer's first name",
                        "Farmer's Last Name", "Amount paid"]
-        return render_template("search.html", chartTitle=title,option=value, farmerName=farmerGrant, tableHeader=tableHeader)
+        return render_template("searchColumn.html", chartTitle=title,option=value, farmerName=farmerGrant, tableHeader=tableHeader)
     else:
         return render_template("selectError.html")
