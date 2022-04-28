@@ -98,6 +98,7 @@ class Funder(db.Model):
 class Grant(db.Model):
     __tablename__ = 'Grant'
     grantID = db.Column(db.Integer, nullable=False, primary_key=True)
+    grantName=db.Column(db.String(100),nullable=False)
     funderID = db.Column(db.Integer, db.ForeignKey('Funder.funderID'))
     totalAward = db.Column(db.Float, nullable=False)
     totalBudgetUsed = db.Column(db.Float, default='NULL')
