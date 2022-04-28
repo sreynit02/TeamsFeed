@@ -1,0 +1,95 @@
+
+            {%extends 'base.html' %}
+            {% block main %}
+            {%if summaryValue%}
+            <div style="margin: 5%;">
+              <h3 style="color: green;">Summary of {{summaryTitle}}</h3>
+              <p>{{summaryTitle}}: {{summaryValue}}</p>
+            </div>
+            
+            {%endif%}
+                    <!--<p>Results: {{searchResults}}</p>
+                    <p>ChartResults: {{chartList}}</p> -->
+            <!-- import googlechart api -->
+            <script src="https://www.gstatic.com/charts/loader.js"></script>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+            
+            <!-- create a div for piechart -->
+                <h2 style="text-align: center;">{{chartTitle}}</h2>
+                <div id="piechart" style="width: 900px; height: 500px;display:table;margin-right: auto;margin-left: auto;"></div>
+            <!-- create table for search result -->
+                </div>
+                    <table id= "resultTable" class="table table-hover">
+                        <thead>
+                          <tr>
+                            {%for header in tableHeader%}
+            
+                            <th scope="col">{{header}}</th>
+                        
+                            {%endfor %}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if option == "4"%}
+                            {% for searchResult in searchResults %}
+                            <tr>
+                              <td>{{searchResult.invoiceNo}}</td>
+                              <td>{{searchResult.dateReceived}}</td>
+                              <td>{{searchResult.datePaid}}</td>
+                              <td>{{searchResult.totalPound}}</td>
+                              <td>{{searchResult.totalCost}}</td>
+                              <td>{{searchResult.grantID}}</td>
+                            </tr>
+
+                          {% elif option == "8" %}
+                          {% for searchResult in searchResults %}
+                          <tr>
+                              <td>{{searchResult.farmerID}}</td>
+                              <td>{{searchResult.farmerID}}</td> 
+                              <td>{{searchResult.totalCost}}</td>
+                          </tr>
+                          {% endfor %}
+                          {% endif%}
+                        </tbody>
+                    </table>
+                    <script type="text/javascript">
+                      //loading packages
+                      google.charts.load('current', {'packages':['corechart']});
+                      google.charts.setOnLoadCallback(drawChart);
+                      //create function to draw chart with data
+                      function drawChart() {
+                      //use jinja to get searchlist that was passed from app.py and keep the list's datatype consistent using safe filter
+                        let results={{ chartList | safe }} 
+                      //create an empty list
+                        resultsList=[]
+                      //create a new data table with the google chart api
+                        var data = new google.visualization.DataTable();
+                      //add new columns to data table
+                        data.addColumn('string', 'County');
+                        data.addColumn('number', 'Number of farmers in county');
+                      //loop through each item in result table 
+                        for (let i=0;i<results.length;i++){
+                          tempArray=[]
+                      //append each item to an array and add a new row to the data table 
+                          tempArray.push(results[i][0])
+                          tempArray.push(results[i][1])
+                          data.addRow(Array.from(tempArray))
+                        }
+                      //add title to pie chart
+                        var options = {
+                          // title: ''
+                        };
+                      //displays piechart created in the google api in the div with the id = piechart
+                      var chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+                            }
+                    </script>
+            <!-- Displays the chart only one 10,25,50 or 100 rows at time, searches the result table-->
+                    <script>
+                      $(document).ready(function(){
+                          $('#resultTable').dataTable();
+                      });
+                    </script>
+            {%endblock%}  
