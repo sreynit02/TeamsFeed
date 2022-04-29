@@ -9,7 +9,9 @@ from decimal import Decimal
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -36,6 +38,7 @@ def renderSearchPage(value):
         from models import Grant
         totalCost = Invoices.query.with_entities(
             func.sum(Invoices.totalCost)).all()[0][0]
+        # Rounds off the totalCost to 2 decimal places
         totalCost = Decimal(totalCost)
         totalCost = round(totalCost, 2)
         # query all invoices to show in table
@@ -74,7 +77,7 @@ def renderSearchPage(value):
             tempList.append(int(produce[2]))
             foodCostList.append(tempList)
         return render_template("search.html", tableTitle=tableTitle, option=value, chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader, chartList=foodCostList)
-        
+
     elif value == "3":
         # pounds distributed
         from models import PurchasedProduce
@@ -101,6 +104,11 @@ def renderSearchPage(value):
         pounds = Invoices.query.with_entities(
             func.sum(Invoices.totalPound)).all()
         mealSupplemented = pounds[0][0]/6
+        
+        #Rounds off the meals supplemented to an integer
+        mealSupplemented = round(mealSupplemented)
+
+
         invoices = Invoices.query.all()
         # Pie chart displays the total meals supplied by each grant
         # TO DO: This can be best represented as a bar graph
@@ -119,6 +127,7 @@ def renderSearchPage(value):
         tableTitle="Details of invoices"
         summaryTitle="Total Meals supplemented"
         return render_template("search.html", tableTitle=tableTitle,chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
+
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
@@ -160,6 +169,10 @@ def renderSearchPage(value):
         from models import Invoices
         average = Invoices.query.with_entities(
             func.avg(Invoices.totalCost)).all()[0][0]
+        #Round the average amount paid to farmers to 2 decimal
+        average = Decimal(average)
+        average = round(average, 2)
+
         invoices = Invoices.query.all()
         FarmerPayment=Invoices.query.with_entities(Invoices.farmerID, func.sum(Invoices.totalCost)).group_by(Invoices.farmerID).all()
         paymentList = []
