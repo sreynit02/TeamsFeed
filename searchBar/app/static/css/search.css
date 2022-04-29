@@ -1,4 +1,4 @@
-.page-item.active .page-link{
+/* .page-item.active .page-link{
     background-color: rgb(243, 140, 14) !important;
     border-color:rgb(22, 114, 40) !important;
   }
@@ -24,6 +24,6 @@
   /*below block of css for change style when active*/
   
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-background: none !important;
+background: none ;
 color: rgb(22, 114, 40)!important;
-}
+} */

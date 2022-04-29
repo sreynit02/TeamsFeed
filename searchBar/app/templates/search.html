@@ -32,9 +32,8 @@
 <!-- create table for search result -->
     </div >
     <div class="container-fluid">
-        <table id= "resultTable" 
-        class="table table-hover"
-        >
+        <table id= "table" 
+        class="table table-hover">
             <thead>
               <tr scope="row">
                 {%for header in tableHeader%}
@@ -70,8 +69,6 @@
                   <td>{{searchResult[1]}}</td>
                   <td>{{searchResult[2]}}</td>
                   <td>pounds</td>
-                  
-                  
               </tr>
               {% endfor %}
               {% elif option == "5" %}
@@ -146,7 +143,7 @@
           }
         </script>
 <!-- Displays the chart only one 10,25,50 or 100 rows at time, searches the result table-->
-        <script>
+        <!-- <script>
           $(document).ready(function(){
               $('#resultTable').dataTable({
                 dom: 'Bfrtip',
@@ -154,5 +151,5 @@
                 buttons: [ 'copy', 'excel', 'pdf']
               });
           });
-        </script>
+        </script> -->
 {%endblock%}
