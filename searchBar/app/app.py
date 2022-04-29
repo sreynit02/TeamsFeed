@@ -9,7 +9,7 @@ from decimal import Decimal
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -21,6 +21,9 @@ db = SQLAlchemy(app)
 def render_homepage():
     return render_template("index.html")
 
+@app.route("/export")
+def render_export():
+    return render_template("export.html")
 # run the route that is connected to the search page
 
 

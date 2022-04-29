@@ -1,0 +1,29 @@
+.page-item.active .page-link{
+    background-color: rgb(243, 140, 14) !important;
+    border-color:rgb(22, 114, 40) !important;
+  }
+  .page-link{
+    color: rgb(22, 114, 40) !important;
+  }
+  /*
+   .paginate_button:hover{
+    border: rgb(239, 242, 240) !important;
+   }
+   .pagination>li>a, .pagination>li>span{
+    color:1px solid red !important; */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: none !important;
+  color: rgb(22, 114, 40)!important;
+}
+    /* .pagination>li>a, .pagination>li>span{
+    color:1px solid red !important
+    }
+    /*change the hover text color*/
+  
+  
+  /*below block of css for change style when active*/
+  
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+background: none !important;
+color: rgb(22, 114, 40)!important;
+}
