@@ -9,7 +9,9 @@ from decimal import Decimal
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://User1:Berea#CSC330@127.0.0.1:3306/feedingky"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -21,6 +23,9 @@ db = SQLAlchemy(app)
 def render_homepage():
     return render_template("index.html")
 
+@app.route("/export")
+def render_export():
+    return render_template("export.html")
 # run the route that is connected to the search page
 
 
@@ -50,10 +55,11 @@ def renderSearchPage(value):
             fundingList.append(tempList)
         title="Total funding per grant"
         summaryTitle="The total funding spent"
+        tableTitle="Invoice details"
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant used"]
 
-        return render_template("search.html", tableHeader=tableHeader,chartTitle=title, option=value, summaryValue=totalCost, summaryTitle=summaryTitle, chartList=fundingList,searchResults=invoices)
+        return render_template("search.html", tableTitle=tableTitle,tableHeader=tableHeader,chartTitle=title, option=value, summaryValue=totalCost, summaryTitle=summaryTitle, chartList=fundingList,searchResults=invoices)
 
     elif value == "2":
         #  types of produce query
@@ -62,6 +68,7 @@ def renderSearchPage(value):
         # get distinct food with produce type
         producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
         title="Amount of produce purchased per food type"
+        tableTitle="Details of purchased produce"
         tableHeader = ["Food name", "Quantity of produce"]
         foodCostList = []
         for produce in producePurchased:
@@ -69,7 +76,8 @@ def renderSearchPage(value):
             tempList.append(str(produce[1]))
             tempList.append(int(produce[2]))
             foodCostList.append(tempList)
-        return render_template("search.html", option=value, chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader, chartList=foodCostList)
+        return render_template("search.html", tableTitle=tableTitle, option=value, chartTitle=title,searchResults=producePurchased, tableHeader=tableHeader, chartList=foodCostList)
+
     elif value == "3":
         # pounds distributed
         from models import PurchasedProduce
@@ -86,8 +94,9 @@ def renderSearchPage(value):
             foodQuntityList.append(tempList)
         title="Total quantity of produce in pounds purchased for each food type "
         summaryTitle="Total pounds purchased"
+        tableTitle="Details of pounds of food purchased"
         tableHeader = ["Food Name", "Total produce purchased","units"]
-        return render_template("search.html", option=value, chartTitle=title,chartList=foodQuntityList,searchResults=food, summaryValue=pounds,summaryTitle=summaryTitle, tableHeader=tableHeader)
+        return render_template("search.html", tableTitle=tableTitle, option=value, chartTitle=title,chartList=foodQuntityList,searchResults=food, summaryValue=pounds,summaryTitle=summaryTitle, tableHeader=tableHeader)
     elif value == "4":
         # meals supplemented = total Pounds/0.06
         from models import Invoices
@@ -115,8 +124,10 @@ def renderSearchPage(value):
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant"]
         title="Number of meals supplemented by different grants"
+        tableTitle="Details of invoices"
         summaryTitle="Total Meals supplemented"
-        return render_template("searchColumn.html",chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
+        return render_template("search.html", tableTitle=tableTitle,chartTitle=title, option=value, tableHeader=tableHeader, summaryValue=str(mealSupplemented),summaryTitle=summaryTitle, searchResults=invoices, chartList=GrantTotalList)
+
     elif value == "5":
         # farmers that participate in program
         from models import Farmer
@@ -131,9 +142,10 @@ def renderSearchPage(value):
             cityList.append(tempList)
         tableHeader = ["County", "Number of Farmers"]
         title="Number of farmers per city"
+        tableTitle="List of farmers that participate in the program"
         tableHeader = ["First Name", "Last Name",
                        "Phone Number", "City", "County", "State"]
-        return render_template("search.html", chartTitle=title,tableHeader=tableHeader, option=value, searchResults=farmers,chartList=cityList)
+        return render_template("search.html",tableTitle=tableTitle, chartTitle=title,tableHeader=tableHeader, option=value, searchResults=farmers,chartList=cityList)
     elif value == "6":
         # which Kentucky counties are the farmers from
         # TO DO: Order these by county
@@ -148,7 +160,8 @@ def renderSearchPage(value):
             countyList.append(tempList)
         tableHeader = ["County", "Number of Farmers"]
         title="Number of farmers per county"
-        return render_template("search.html", chartTitle=title,tableHeader=tableHeader, option=value, searchResults=counties, chartList=countyList)
+        tableTitle="Number of farmers from different counties in Kentucky"
+        return render_template("search.html",tableTitle=tableTitle, chartTitle=title,tableHeader=tableHeader, option=value, searchResults=counties, chartList=countyList)
     elif value == "7":
         # Average amount paid to farmers
         # TO DO: Add a join with Farmer table so as to display the farmer name instead of IDs
@@ -170,9 +183,10 @@ def renderSearchPage(value):
             paymentList.append(tempList)
         title="Amount paid to every farmer"
         summaryTitle="Average amount paid to farmers"
+        tableTitle="Details of amount paid to farmers "
         tableHeader = ["Invoice Number","Date received","Date Paid",
                        "Total Pounds", "Total Cost","Grant used"]
-        return render_template("search.html", chartTitle=title,option=value, chartList=paymentList,summaryValue=average,summaryTitle=summaryTitle, searchResults=invoices, tableHeader=tableHeader)
+        return render_template("search.html", tableTitle=tableTitle, chartTitle=title,option=value, chartList=paymentList,summaryValue=average,summaryTitle=summaryTitle, searchResults=invoices, tableHeader=tableHeader)
         # tableHeader = ["Invoice Number", "Date Received",
         #                "Date Paid", "Total Pounds", "Total Cost"]
         # return render_template("search.html", tableHeader=tableHeader, option = value, value=average, searchResults=invoices)
@@ -186,8 +200,9 @@ def renderSearchPage(value):
             Farmer.farmerID == farmerGrant).distinct()
         # TO DO: This would be better represented by a bar graph
         title="Farmers paid more than $10,000"
+        tableTitle="List of farmers who earn more than $10,000"
         tableHeader = ["Farmer's first name",
                        "Farmer's Last Name", "Amount paid"]
-        return render_template("searchColumn.html", chartTitle=title,option=value, farmerName=farmerGrant, tableHeader=tableHeader)
+        return render_template("search.html",tableTitle=tableTitle, chartTitle=title,option=value, farmerName=farmerGrant, tableHeader=tableHeader)
     else:
         return render_template("selectError.html")
