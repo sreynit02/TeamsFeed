@@ -164,9 +164,9 @@
         <script>
           $(document).ready(function(){
               $('#resultTable').dataTable({
-                dom: 'Bfrtip',
-                lengthChange: false,
-                buttons: [ 'copy', 'excel', 'pdf']
+                dom: 'sBlfrtip',
+                buttons: [ 'copy', 'excel', 'pdf'],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
               });
           });
         </script>
