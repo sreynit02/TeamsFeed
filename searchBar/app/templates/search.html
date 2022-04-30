@@ -113,9 +113,9 @@
               {% elif option == "8" %}
               {% for searchResult in searchResults %}
               <tr scope="row">
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.farmerID}}</td> 
-                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult[2]}}</td> 
+                  <td>{{searchResult[3]}}</td>
               </tr>
               {% endfor %}
               {% endif%}

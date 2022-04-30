@@ -108,7 +108,6 @@ def renderSearchPage(value):
         #Rounds off the meals supplemented to an integer
         mealSupplemented = round(mealSupplemented)
 
-
         invoices = Invoices.query.all()
         # Pie chart displays the total meals supplied by each grant
         # TO DO: This can be best represented as a bar graph
@@ -120,7 +119,6 @@ def renderSearchPage(value):
             tempList.append(str(total[1]))
             tempList.append(total[2])
             GrantTotalList.append(tempList)
-        print(GrantTotalList)
         tableHeader = ["Invoice Number", "Date Received",
                        "Date Paid", "Total Pounds", "Total Cost","Grant"]
         title="Number of meals supplemented by different grants"
@@ -187,22 +185,24 @@ def renderSearchPage(value):
         tableHeader = ["Invoice Number","Date received","Date Paid",
                        "Total Pounds", "Total Cost","Grant used"]
         return render_template("search.html", tableTitle=tableTitle, chartTitle=title,option=value, chartList=paymentList,summaryValue=average,summaryTitle=summaryTitle, searchResults=invoices, tableHeader=tableHeader)
-        # tableHeader = ["Invoice Number", "Date Received",
-        #                "Date Paid", "Total Pounds", "Total Cost"]
-        # return render_template("search.html", tableHeader=tableHeader, option = value, value=average, searchResults=invoices)
+
     elif value == "8":
         from models import Invoices
         from models import Farmer
-        # Farmers who received more than $10000
-        farmerGrant = Invoices.query.with_entities(
-            Invoices.farmerID).filter(Invoices.totalCost > 10000).distinct()
-        farmerName = Farmer.query.with_entities(Farmer.firstName).filter(
-            Farmer.farmerID == farmerGrant).distinct()
+
+        farmerName = Invoices.query.join(Farmer, Farmer.farmerID == Invoices.farmerID).add_columns(Farmer.firstName, Farmer.lastName, Invoices.totalCost).filter(Invoices.totalCost>10000).all()
+        farmerNameList = []
+        for name in farmerName:
+            tempList = []
+            tempList.append(str(name[1] +" "+name[2]))
+            tempList.append(name[3])
+            farmerNameList.append(tempList)
+
         # TO DO: This would be better represented by a bar graph
         title="Farmers paid more than $10,000"
         tableTitle="List of farmers who earn more than $10,000"
         tableHeader = ["Farmer's first name",
                        "Farmer's Last Name", "Amount paid"]
-        return render_template("search.html",tableTitle=tableTitle, chartTitle=title,option=value, farmerName=farmerGrant, tableHeader=tableHeader)
+        return render_template("search.html", searchResults = farmerName, tableTitle=tableTitle, chartList = farmerNameList, chartTitle=title,option=value, farmerName=farmerName, tableHeader=tableHeader)
     else:
         return render_template("selectError.html")
