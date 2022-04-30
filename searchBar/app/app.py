@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user1:feedingky#DBMS@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -59,7 +59,7 @@ def renderSearchPage(value):
         from models import Food
         from models import PurchasedProduce
         # get distinct food with produce type
-        producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
+        producePurchased = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.round(func.sum(PurchasedProduce.quantity * PurchasedProduce.unitPrice))).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
         title="Amount of produce purchased per food type"
         tableTitle="Details of purchased produce"
         tableHeader = ["Food name", "Quantity of produce"]
@@ -77,7 +77,7 @@ def renderSearchPage(value):
         from models import Food
         pounds = PurchasedProduce.query.with_entities(
             func.sum(PurchasedProduce.quantity)).all()[0][0]
-        food = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.sum(PurchasedProduce.quantity)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
+        food = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID).add_columns(Food.foodName, func.round(func.sum(PurchasedProduce.quantity),2)).filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
         #foodQuantities=PurchasedProduce.query.with_entities(PurchasedProduce.foodID, func.sum(PurchasedProduce.quantity)).group_by(PurchasedProduce.foodID).all()
         foodQuntityList = []
         for quantity in food:
@@ -104,7 +104,7 @@ def renderSearchPage(value):
 
         invoices = Invoices.query.all()
         # Pie chart displays the total meals supplied by each grant
-        GrantTotal = Invoices.query.join(Grant, Invoices.grantID==Grant.grantID).add_columns(Grant.grantName, (func.sum(Invoices.totalPound)/0.06)).group_by(Invoices.grantID).all()
+        GrantTotal = Invoices.query.join(Grant, Invoices.grantID==Grant.grantID).add_columns(Grant.grantName, func.round((func.sum(Invoices.totalPound)/0.06),2)).group_by(Invoices.grantID).all()
         GrantTotalList = []
         for total in GrantTotal:
             tempList = []
@@ -159,14 +159,8 @@ def renderSearchPage(value):
 
         #Round the average amount paid to farmers to 2 decimal
         average = round(average, 2)
+        FarmerPayment=Invoices.query.join(Farmer,Invoices.farmerID==Farmer.farmerID).add_columns(Farmer.firstName,Farmer.lastName,func.round(func.avg(Invoices.totalCost),2)).filter(Invoices.farmerID==Farmer.farmerID).group_by(Invoices.farmerID).all()
 
-        invoices = Invoices.query.all()
-        # food = Food.query.join(PurchasedProduce, Food.foodID == PurchasedProduce.foodID)
-        # .add_columns(Food.foodName, func.sum(PurchasedProduce.quantity))
-        # .filter(Food.foodID == PurchasedProduce.foodID).group_by(Food.foodName).all()
-        FarmerPayment=Invoices.query.join(Farmer,Invoices.farmerID==Farmer.farmerID).add_columns(Farmer.firstName,Farmer.lastName,func.avg(Invoices.totalCost)).filter(Invoices.farmerID==Farmer.farmerID).group_by(Invoices.farmerID).all()
-        # FarmerPayment=Invoices.query.with_entities(Invoices.farmerID, func.sum(Invoices.totalCost)).group_by(Invoices.farmerID).all()
-        # print(FarmerPayment)
         paymentList = []
         for payment in FarmerPayment:
             tempList = []
@@ -177,18 +171,29 @@ def renderSearchPage(value):
         title="Amount paid to every farmer"
         summaryTitle="Average amount paid to farmers"
         tableTitle="Details of amount paid to farmers "
-        tableHeader = ["Invoice Number","Date received","Date Paid", "Total Pounds", "Total Cost","Grant used"]
-        return render_template("searchColumn.html", tableTitle=tableTitle,chartTitle=title, option=value, chartList=paymentList, summaryValue=average, summaryTitle=summaryTitle, searchResults=invoices, tableHeader=tableHeader)
-        
-# Farmers who received more than $10,000
+        tableHeader = ["Farmer's first name",
+                       "Farmer's Last Name", "Amount paid"]
+        return render_template("searchColumn.html", tableTitle=tableTitle, chartTitle=title,option=value, chartList=paymentList,summaryValue=average,summaryTitle=summaryTitle, searchResults=FarmerPayment, tableHeader=tableHeader)
+
     elif value == "8":
         from models import Invoices
         from models import Farmer
-        farmerGrant = Invoices.query.with_entities(Invoices.farmerID).filter(Invoices.totalCost > 10000).distinct()
-        farmerName = Farmer.query.with_entities(Farmer.firstName).filter(Farmer.farmerID == farmerGrant).distinct()
+
+        farmerName = Invoices.query.join(Farmer, Farmer.farmerID == Invoices.farmerID).add_columns(Farmer.firstName, Farmer.lastName, Invoices.totalCost).filter(Invoices.totalCost>10000).all()
+        print(farmerName)
+        farmerNameList = []
+        for name in farmerName:
+            tempList = []
+            tempList.append(str(name[1] +" "+name[2]))
+            tempList.append(name[3])
+            farmerNameList.append(tempList)
+
+        # TO DO: This would be better represented by a bar graph
         title="Farmers paid more than $10,000"
-        tableHeader = ["Farmer's first name", "Farmer's Last Name", "Amount paid"]
         tableTitle="List of farmers who earn more than $10,000"
-        return render_template("search.html",tableTitle=tableTitle)
+        tableHeader = ["Farmer's first name",
+                       "Farmer's Last Name", "Amount paid"]
+        return render_template("searchColumn.html", searchResults = farmerName, tableTitle=tableTitle, chartList = farmerNameList, chartTitle=title,option=value, farmerName=farmerName, tableHeader=tableHeader)
+
     else:
         return render_template("selectError.html")

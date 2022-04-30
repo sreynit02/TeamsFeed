@@ -57,7 +57,7 @@
               </tr>
             </thead>
             <tbody>
-              {% if option == "1" or option == "4" or option == "7" %}
+              {% if option == "1" or option == "4" %}
                 {% for searchResult in searchResults %}
                 <tr scope="row">
                   <td>{{searchResult.invoiceNo}}</td>
@@ -105,17 +105,17 @@
               {% elif option == "7" %}
               {% for searchResult in searchResults %}
               <tr scope="row">
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td>
+                  <td>{{searchResult[3]}}</td>
               </tr>
               {% endfor %}
               {% elif option == "8" %}
               {% for searchResult in searchResults %}
               <tr scope="row">
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.farmerID}}</td> 
-                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td> 
+                  <td>{{searchResult[3]}}</td>
               </tr>
               {% endfor %}
               {% endif%}
