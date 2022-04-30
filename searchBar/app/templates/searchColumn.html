@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/search.css')}}">
 {%if summaryValue%}
 <div style="margin: 2%;">
-  <h3 style="color: green;">Summary of {{summaryTitle}}</h3>
+  <h3 style="color: #3A5311;">Summary of {{summaryTitle}}</h3>
   <p style="font-size:large;">{{summaryTitle}}: {{summaryValue}}</p>
 </div>
 
@@ -57,7 +57,7 @@
               </tr>
             </thead>
             <tbody>
-              {% if option == "1" or option == "4" or option == "7" %}
+              {% if option == "1" or option == "4" %}
                 {% for searchResult in searchResults %}
                 <tr scope="row">
                   <td>{{searchResult.invoiceNo}}</td>
@@ -105,17 +105,17 @@
               {% elif option == "7" %}
               {% for searchResult in searchResults %}
               <tr scope="row">
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td>
+                  <td>{{searchResult[3]}}</td>
               </tr>
               {% endfor %}
               {% elif option == "8" %}
               {% for searchResult in searchResults %}
               <tr scope="row">
-                  <td>{{searchResult.farmerID}}</td>
-                  <td>{{searchResult.farmerID}}</td> 
-                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td> 
+                  <td>{{searchResult[3]}}</td>
               </tr>
               {% endfor %}
               {% endif%}
@@ -137,7 +137,7 @@
             var data = new google.visualization.DataTable();
           //add new columns to data table
             data.addColumn('string', 'County');
-            data.addColumn('number', 'test');
+            data.addColumn('number');
           //loop through each item in result table 
             for (let i=0;i<results.length;i++){
               tempArray=[]
@@ -149,6 +149,7 @@
           //add title to pie chart
             var options = {
               // title: ''
+              colors: ['#de8521']
             };
           //displays piechart created in the google api in the div with the id = piechart
             var chart = new google.visualization.BarChart(document.getElementById('piechart'));
