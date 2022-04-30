@@ -1,95 +1,169 @@
+{%extends 'base.html' %}
+{% block main %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/search.css')}}">
+{%if summaryValue%}
+<div style="margin: 2%;">
+  <h3 style="color: green;">Summary of {{summaryTitle}}</h3>
+  <p style="font-size:large;">{{summaryTitle}}: {{summaryValue}}</p>
+</div>
 
-            {%extends 'base.html' %}
-            {% block main %}
-            {%if summaryValue%}
-            <div style="margin: 5%;">
-              <h3 style="color: green;">Summary of {{summaryTitle}}</h3>
-              <p>{{summaryTitle}}: {{summaryValue}}</p>
-            </div>
+{%endif%}
+        <!--<p>Results: {{searchResults}}</p>
+        <p>ChartResults: {{chartList}}</p> -->
+<!-- import googlechart api -->
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    
+    
+   <!-- New data import -->
+   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.colVis.min.js"></script>
+   <script src="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"></script>
+
+<!-- create a div for piechart -->
+    <h2 style="text-align: center;">{{chartTitle}}</h2>
+    <div id="piechart" style="width: 1500px; height: 1500px;display:table;margin-right: auto;margin-left: auto;"></div>
+<!-- create table for search result -->
+    </div >
+    <div class="container-fluid">
+      <h2 id="tableHeader">{{tableTitle}} </h2>
+      <h6>Export Table as:</h6>
+        <table id= "resultTable" 
+        class="table table-hover display nowrap table-bordered">
+            <thead>
+              <tr scope="row">
+                {%for header in tableHeader%}
+
+                <th scope="col">{{header}}</th>
             
-            {%endif%}
-                    <!--<p>Results: {{searchResults}}</p>
-                    <p>ChartResults: {{chartList}}</p> -->
-            <!-- import googlechart api -->
-            <script src="https://www.gstatic.com/charts/loader.js"></script>
-            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-            
-            <!-- create a div for piechart -->
-                <h2 style="text-align: center;">{{chartTitle}}</h2>
-                <div id="piechart" style="width: 900px; height: 500px;display:table;margin-right: auto;margin-left: auto;"></div>
-            <!-- create table for search result -->
-                </div>
-                    <table id= "resultTable" class="table table-hover">
-                        <thead>
-                          <tr>
-                            {%for header in tableHeader%}
-            
-                            <th scope="col">{{header}}</th>
-                        
-                            {%endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% if option == "4"%}
-                            {% for searchResult in searchResults %}
-                            <tr>
-                              <td>{{searchResult.invoiceNo}}</td>
-                              <td>{{searchResult.dateReceived}}</td>
-                              <td>{{searchResult.datePaid}}</td>
-                              <td>{{searchResult.totalPound}}</td>
-                              <td>{{searchResult.totalCost}}</td>
-                              <td>{{searchResult.grantID}}</td>
-                            </tr>
-                            {%endfor%}
-                          {% elif option == "8" %}
-                          {% for searchResult in searchResults %}
-                          <tr>
-                              <td>{{searchResult.farmerID}}</td>
-                              <td>{{searchResult.farmerID}}</td> 
-                              <td>{{searchResult.totalCost}}</td>
-                          </tr>
-                          {% endfor %}
-                          {% endif%}
-                        </tbody>
-                    </table>
-                    <script type="text/javascript">
-                      //loading packages
-                      google.charts.load('current', {'packages':['corechart']});
-                      google.charts.setOnLoadCallback(drawChart);
-                      //create function to draw chart with data
-                      function drawChart() {
-                      //use jinja to get searchlist that was passed from app.py and keep the list's datatype consistent using safe filter
-                        let results={{ chartList | safe }} 
-                      //create an empty list
-                        resultsList=[]
-                      //create a new data table with the google chart api
-                        var data = new google.visualization.DataTable();
-                      //add new columns to data table
-                        data.addColumn('string', 'County');
-                        data.addColumn('number', 'Number of farmers in county');
-                      //loop through each item in result table 
-                        for (let i=0;i<results.length;i++){
-                          tempArray=[]
-                      //append each item to an array and add a new row to the data table 
-                          tempArray.push(results[i][0])
-                          tempArray.push(results[i][1])
-                          data.addRow(Array.from(tempArray))
-                        }
-                      //add title to pie chart
-                        var options = {
-                          // title: ''
-                        };
-                      //displays piechart created in the google api in the div with the id = piechart
-                      var chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
+                {%endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% if option == "1" or option == "4" or option == "7" %}
+                {% for searchResult in searchResults %}
+                <tr scope="row">
+                  <td>{{searchResult.invoiceNo}}</td>
+                  <td>{{searchResult.dateReceived}}</td>
+                  <td>{{searchResult.datePaid}}</td>
+                  <td>{{searchResult.totalPound}}</td>
+                  <td>{{searchResult.totalCost}}</td>
+                  <td>{{searchResult.grantID}}</td>
+                </tr>
+              {% endfor %}
+              {% elif option == "2" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult[2]}}</td>
+                
+              </tr>
+              {% endfor %}
+              {% elif option == "3" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult[1]}}</td>
+                  <td>{{searchResult[2]}}</td>
+                  <td>pounds</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "5" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult.firstName}}</td>
+                  <td>{{searchResult.lastName}}</td>
+                  <td>{{searchResult.phoneNumber}}</td>
+                  <td>{{searchResult.city}}</td>
+                  <td>{{searchResult.county}}</td>
+                  <td>{{searchResult.state}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "6" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult[0]}}</td>
+                  <td>{{searchResult[1]}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "7" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
+              {% elif option == "8" %}
+              {% for searchResult in searchResults %}
+              <tr scope="row">
+                  <td>{{searchResult.farmerID}}</td>
+                  <td>{{searchResult.farmerID}}</td> 
+                  <td>{{searchResult.totalCost}}</td>
+              </tr>
+              {% endfor %}
+              {% endif%}
+            </tbody>
+        </table>
+      </div>
+        
+        <script type="text/javascript">
+          //loading packages
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+          //create function to draw chart with data
+          function drawChart() {
+          //use jinja to get searchlist that was passed from app.py and keep the list's datatype consistent using safe filter
+            let results={{ chartList | safe }} 
+          //create an empty list
+            resultsList=[]
+          //create a new data table with the google chart api
+            var data = new google.visualization.DataTable();
+          //add new columns to data table
+            data.addColumn('string', 'County');
+            data.addColumn('number', 'test');
+          //loop through each item in result table 
+            for (let i=0;i<results.length;i++){
+              tempArray=[]
+          //append each item to an array and add a new row to the data table 
+              tempArray.push(results[i][0])
+              tempArray.push(results[i][1])
+              data.addRow(Array.from(tempArray))
+            }
+          //add title to pie chart
+            var options = {
+              // title: ''
+            };
+          //displays piechart created in the google api in the div with the id = piechart
+            var chart = new google.visualization.BarChart(document.getElementById('piechart'));
             chart.draw(data, options);
-                            }
-                    </script>
-            <!-- Displays the chart only one 10,25,50 or 100 rows at time, searches the result table-->
-                    <script>
-                      $(document).ready(function(){
-                          $('#resultTable').dataTable();
-                      });
-                    </script>
-            {%endblock%}  
+                }
+        </script>
+<!-- Create a datatable to display results-->
+        <script>
+          $(document).ready(function(){
+              $('#resultTable').dataTable({
+                dom: 'sBlfrtip',
+                buttons: [ 'copy', 'excel', 'pdf'],
+                // Make the table range to include All
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+              });
+          });
+        </script>
+{%endblock%}

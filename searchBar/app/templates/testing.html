@@ -1,0 +1,66 @@
+<html> 
+    <head> 
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script> 
+        <script type="text/javascript"> 
+            google.load("visualization", "1", {packages:["corechart"]}); 
+            google.setOnLoadCallback(InitChart); 
+            var data = {}, chart; 
+            var pager = { currentPage: 0, countPages: 0, pageSize: 10 }; 
+            var options = { width: 1000, height: 1000, title: 'Company Performance',  
+            vAxis: { title: 'Year', titleTextStyle: { color: 'red'}} }; 
+            
+            function InitChart() { 
+            chart = new google.visualization.BarChart(document.getElementById('visualization')); 
+            data = new google.visualization.DataTable(); 
+            let results={{ chartList | safe }}
+            data.addColumn('string', 'Year'); 
+            data.addColumn('number', 'Sales'); 
+            for (let i=0;i<results.length;i++){
+              tempArray=[]
+          //append each item to an array and add a new row to the data table 
+              tempArray.push(results[i][0])
+              tempArray.push(results[i][1])
+              data.addRow(Array.from(tempArray))
+            }
+            
+            // setting number of pages and moving to first page 
+            pager.countPages = Math.ceil(data.getNumberOfRows() / pager.pageSize); 
+            Paginate('next'); 
+            } 
+            
+            function Paginate(dir) { 
+            // moving page number 
+            if (pager.currentPage == 1 && dir == 'prev') return; 
+            if (pager.currentPage == pager.countPages && dir == 'next') return; 
+            if (dir == 'next') pager.currentPage += 1; 
+            if (dir == 'prev') pager.currentPage -= 1; 
+            
+            var cloneTable = data.clone(); 
+            var numOfRows = cloneTable.getNumberOfRows(); 
+            // validate existance of data for pager, and remove rows 
+            if (numOfRows > 0 && pager.currentPage <= pager.countPages) { 
+            // remove previous rows  
+            cloneTable.removeRows(0, (pager.currentPage - 1) * pager.pageSize); 
+            // remove next rows  
+            cloneTable.removeRows(pager.pageSize, cloneTable.getNumberOfRows() - pager.pageSize); 
+            } 
+            
+            // filling empty values for rest of last page 
+            numOfRows = cloneTable.getNumberOfRows(); 
+            if (numOfRows < pager.pageSize) 
+            { 
+            for (var i = numOfRows; i < pager.pageSize; i++) { 
+            cloneTable.addRow(['', 0]); 
+            } 
+            } 
+            
+            chart.draw(cloneTable, options); 
+            } 
+            </script> 
+            </head> 
+            <body> 
+                <div id="visualization"></div> 
+                <span style="cursor:pointer;" onclick="Paginate('prev');">Prev</span>&nbsp; 
+                <span style="cursor:pointer;" onclick="Paginate('next');">Next</span> 
+            </body> 
+            </html>
