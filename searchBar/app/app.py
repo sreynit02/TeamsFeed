@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 # create flask application and import database (be sure to put in your username/password/name of database)
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:password@127.0.0.1:3306/feedingky"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user:Superliminal2019!@127.0.0.1:3306/feedky"
 
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -102,9 +102,9 @@ def renderSearchPage(value):
         #Rounds off the meals supplemented to an integer
         mealSupplemented = round(mealSupplemented)
 
-        invoices = Invoices.query.all()
+        invoices = Invoices.query.join(Grant, Invoices.grantID==Grant.grantID).add_columns(Invoices.invoiceNo, Invoices.dateReceived, Invoices.datePaid, Invoices.totalPound, Invoices.totalCost, Grant.grantName).all()
         # Pie chart displays the total meals supplied by each grant
-        GrantTotal = Invoices.query.join(Grant, Invoices.grantID==Grant.grantID).add_columns(Grant.grantName, func.round((func.sum(Invoices.totalPound)/0.06),2)).group_by(Invoices.grantID).all()
+        GrantTotal = Invoices.query.join(Grant, Invoices.grantID==Grant.grantID).add_columns(Grant.grantName, func.round((func.sum(Invoices.totalPound)/0.06),2)).group_by(Grant.grantName).all()
         GrantTotalList = []
         for total in GrantTotal:
             tempList = []
