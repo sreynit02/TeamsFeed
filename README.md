@@ -9,6 +9,9 @@
 3. Tawanda Kumbula  
 4. Luke Wilson  
 
+### Community Partner
+1. Sarah Vaughn from Feeding Kentucky 
+
 ### Professors and TAs:
 
 1. Dr. Jasmine Jones  
@@ -52,3 +55,7 @@ rules were changed and adjusted with minor tweaks to our business rules.
 The Entity-relationship diagram is as shown below:
 
 <image src="https://github.com/sreynit02/TeamsFeed/blob/main/Updated_ERD_FeedingKY.png">
+  
+## User Journey
+  
+##   
