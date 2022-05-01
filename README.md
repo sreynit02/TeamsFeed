@@ -28,6 +28,8 @@ For over 10 years, FeedingKY has not collected enough detailed information from 
 Our goal is to create a database that can effectively use queries to give the user data about farmers, crops, and where grant money goes.
 
 
+## Project description
+
 ## Business Rule 
 1. A farm can only be assigned to one county. 
 2. The quantity of the food is from the farmers invoice dropped by the farmer at the foodbank. The invoice is then sent to FeedingKY from the foodbank. The invoice is used to keep track of where produce goes and the price of that produce. This helps keep track of grant money spent.  
