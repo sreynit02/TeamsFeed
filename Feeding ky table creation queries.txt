@@ -1,0 +1,133 @@
+﻿DATABASE DOMAIN CONSTRAINTS FOR FEEDINGKY
+
+
+CREATING DATABASE
+DROP DATABASE IF EXISTS `feedingky`;
+CREATE DATABASE `feedingky`;
+	
+
+FOOD 
+CREATE TABLE `Food` (
+ `foodID` INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+ `foodType` VARCHAR(50) NOT NULL DEFAULT 'produce',
+ `foodName` VARCHAR(50) NOT NULL UNIQUE,
+ CHECK (`foodType` in ('protein', 'produce', 'cheese')));
+	
+
+FARMER
+CREATE TABLE `Farmer` (
+`farmerID` int NOT NULL UNIQUE PRIMARY KEY,
+`firstName`  varchar(50) NOT NULL,
+`lastName`  varchar(50) NOT NULL,
+`email`  varchar(50),
+`phoneNumber`  varchar(12) DEFAULT NULL, 
+`street`  varchar(50) NOT NULL,
+`city`  varchar(50) NOT NULL,
+`state` varchar(2) DEFAULT 'KY',
+`zip` varchar(12) NOT NULL,
+`county` varchar(50) NOT NULL,
+`dateAdded` date NOT NULL);
+	
+
+FUNDER
+CREATE TABLE `Funder` (
+  `funderID` int NOT NULL PRIMARY KEY UNIQUE,
+ `funderLink` varchar(50) NOT NULL,
+ `funderContactName` varchar(50) NOT NULL,
+ `funderContactEmail` varchar(50) DEFAULT NULL,
+ `funderContactPhoneNo` varchar(12) DEFAULT NULL,
+ `funderStreet` varchar(50) Default NULL,
+ `funderCity` varchar(50) Default NULL,
+ `funderState` varchar(2) Default NULL,
+ `funderZipcode` varchar(12) NOT NULL);
+
+	
+
+
+
+GRANT
+CREATE TABLE `Grant` (
+ `grantID` int NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  `grantName` varchar(200) DEFAULT NULL,
+ `funderID` int NOT NULL UNIQUE,
+ `totalAward` float DEFAULT NULL,
+ `totalBudgetUsed` float DEFAULT NULL,
+ `startDate` date NOT NULL,
+ `endDate` date NOT NULL,
+ `restrictions` varchar(1000) DEFAULT NULL,
+ `reportingRequirement` varchar(1000) DEFAULT NULL,
+ `recordRequirement` varchar(1000) DEFAULT NULL,
+ `closed` tinyint(1) DEFAULT NULL,
+ `grantType` varchar(50) DEFAULT `grant_type`,
+ `programName` varchar(50) DEFAULT NULL,
+ FOREIGN KEY (`funderID`) REFERENCES `Funder` (`funderID`)); 
+
+
+AUCTION
+CREATE TABLE `Auction` (
+`auctionID` int NOT NULL UNIQUE PRIMARY KEY, 
+`AuctionDate` date NOT NULL, 
+`auctionName` varchar(100) NOT NULL, 
+`auctionStreet` varchar(50)  DEFAULT NULL, 
+`auctionCity` varchar(20) NULL, 
+`auctionState` varchar(2) DEFAULT 'KY', 
+`auctionZip` varchar(12) DEFAULT NULL, 
+`auctionCounty` varchar(50) DEFAULT NULL, 
+`auctionPhone` varchar(12) DEFAULT NULL, 
+`auctionContactName` varchar(50) DEFAULT NULL);
+
+	
+
+	FOODBANK
+
+
+CREATE TABLE `FoodBank` (
+ `foodbankID` int NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
+ `fbName` varchar(45) NOT NULL,
+ `fbStreet` varchar(45) NOT NULL,
+ `fbCity` varchar(45) NOT NULL,
+ `fbCounty` varchar(45) NOT NULL,
+ `fbState` varchar(2) DEFAULT 'KY',
+ `fbZip` varchar(12) NOT NULL,
+ `fbPhoneNo` varchar(12) NOT NULL UNIQUE,
+ `contactName` varchar(45) DEFAULT NULL,
+ `contactEmail` varchar(100) DEFAULT NULL,
+ `contactPhoneNo` varchar(12) DEFAULT NULL UNIQUE);
+	
+
+PURCHASED PRODUCE
+CREATE TABLE `PurchasedProduce` (
+ `pfID` int NOT NULL PRIMARY KEY UNIQUE,
+ `invoiceNo` int NOT NULL,
+ `foodID` int NOT NULL UNIQUE,
+ `quantity` int NOT NULL,
+ `unitPrice` FLOAT NOT NULL,
+ `unit` varchar(20) NOT NULL,
+FOREIGN KEY (`foodID`) REFERENCES `Food` (`foodID`));
+	
+
+
+
+INVOICES
+CREATE TABLE `Invoices` (
+ `invoiceNo` int UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ `invoiceType` varchar(50) NOT NULL,
+ `outsideInvoice` varchar(50) NOT NULL,
+ `dateReceived` date NOT NULL,
+ `datePaid` date NOT NULL,
+ `totalPound` float NOT NULL,
+ `totalCost` float NOT NULL,
+ `checkNo` int DEFAULT NULL,
+ `deliveryFee` float DEFAULT NULL,
+ `buyFee` float DEFAULT NULL,
+ `purchaseOrder` varchar(255) DEFAULT NULL,
+  `pfID` int NOT NULL,
+  `grantID` int NOT NULL,
+ `farmerID` int NOT NULL,
+  `auctionID` int NOT NULL,
+  `foodBankID` int NOT NULL,
+ FOREIGN KEY (`pfID`) REFERENCES `PurchasedProduce` (`pfID`),
+ FOREIGN KEY (`grantID`) REFERENCES `Grant` (`grantID`),
+ FOREIGN KEY (`farmerID`) REFERENCES `Farmer` (`farmerID`),
+  FOREIGN KEY (`auctionID`) REFERENCES `Auction` (`auctionID`),
+ FOREIGN KEY (`foodBankID`) REFERENCES `FoodBank` (`foodBankID`));
