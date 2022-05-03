@@ -29,6 +29,15 @@ Our goal is to create a database that can effectively use queries to give the us
 
 
 ## Project description
+This project contains three parts: project management, data modeling, and application development. 
+
+The data modeling part started with client meetings to better understand the business rules of Feeding Kentucky which helped us develop an Entity-Relationship(ER) Diagram. Then we normalized the data model we had developed to ensure it represented the business rules from our community partner and did not contain anomalies.
+
+The project management part of the project involved brainstorming viable solutions to the problem statement identified. We shared our solution ideas with the client before deciding to develop a search application. With the confirmation from our client and the knowledge of the available resources, we started prototyping the solution. The prototyping phase included sketching, and developing user flows and wireframes for our solution.
+
+Then, we proceeded to the project development phase. The search feature contains a search bar and a results page. The search bar is the area where a user selects what they want to search for in the database. The search bar contains a dropdown menu of questions that Sarah Vaughn frequently wants to answer using the information. After the user selects a question, the application runs a SQL query that fetches the answer and displays the results on a new page. We represent our results in tabular and graphical forms. We used Bootstrap data tables for the tabular representation of the results. Using data tables allowed us to add searching, sorting, pagination, and export features to the tables. The Export functionality enables a user to copy or download an Excel or PDF version of the table. This is specifically useful when a user wants to perform advanced computations with the data in Excel or attach the results to a report in pdf form The visualizations are pie charts or bar graphs. The visualization is implemented by using Google Chart API which displays the result of a query in pie and bar charts. 
+
+Some of the software requirements are WLS2 for Windows/ Ubuntu or Linux or MacOS terminal, Docker, Virtual Environment, Python3, and MySQL Workbench. To develop our application, we used the Flask web framework, MySQL, Python, HTML, Javascript, and Flask-SQLAlchemy. 
 
 ## Business Rule 
 1. A farm can only be assigned to one county. 
