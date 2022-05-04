@@ -11,9 +11,6 @@
 
 ### Community Partner
 
-https://user-images.githubusercontent.com/54441700/166608324-51225a72-b22a-444e-ad58-3f98001b4501.mp4
-
-
 1. Sarah Vaughn from Feeding Kentucky 
 
 ### Professors and TAs:
