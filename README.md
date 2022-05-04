@@ -68,4 +68,4 @@ The Entity-relationship diagram is as shown below:
 <image src="https://github.com/sreynit02/TeamsFeed/blob/main/Updated_ERD_FeedingKY.png">
   
 ## Feeding Kentucky Application Preview
-  https://youtu.be/5l12pmdiiEY
+  [![Watch the video](https://img.youtube.com/vi/5l12pmdiiEY/0.jpg)](https://youtu.be/5l12pmdiiEY)
