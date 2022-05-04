@@ -10,6 +10,10 @@
 4. Luke Wilson  
 
 ### Community Partner
+
+https://user-images.githubusercontent.com/54441700/166608324-51225a72-b22a-444e-ad58-3f98001b4501.mp4
+
+
 1. Sarah Vaughn from Feeding Kentucky 
 
 ### Professors and TAs:
@@ -68,4 +72,5 @@ The Entity-relationship diagram is as shown below:
 <image src="https://github.com/sreynit02/TeamsFeed/blob/main/Updated_ERD_FeedingKY.png">
   
 ## Feeding Kentucky Application Preview
-  [![Watch the video](https://img.youtube.com/vi/5l12pmdiiEY/0.jpg)](https://youtu.be/5l12pmdiiEY)
+<!--   [![Watch the video](https://img.youtube.com/vi/5l12pmdiiEY/0.jpg)](https://youtu.be/5l12pmdiiEY) -->
+  https://user-images.githubusercontent.com/54441700/166608366-aaeeb466-22d3-4c19-b7ee-4b17d08ca3ff.mp4
